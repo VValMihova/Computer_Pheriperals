@@ -1,0 +1,1464 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Сензорни екрани</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: sticky contents rail on the left, ~68ch reading column on the right; the simulator and the block diagram are the two instruments that use the full column width. */
+:root{
+  --bg:#f5f7fa; --surface:#ffffff; --surface-2:#eceff4; --line:#d5dbe4;
+  --fg:#151b26; --muted:#556070;
+  --accent:#1f5fbf; --accent-soft:#e3edfb; --on-accent:#ffffff;
+  --ok:#1d7a4d; --ok-soft:#dff3e8;
+  --warn:#8f5700; --warn-soft:#fbefd5;
+  --bad:#b42318; --bad-soft:#fce4e1;
+  --paper:#f6f6f2; --ink:#1b1d21;
+  --l1:#dde8f6; --l2:#b9cfee; --l3:#e4e8ee; --l4:#f1f3f6;
+  --font-sans:'Inter',system-ui,-apple-system,'Segoe UI',Roboto,Arial,sans-serif;
+  --font-mono:'IBM Plex Mono',ui-monospace,'SFMono-Regular',Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --bg:#0f141b; --surface:#161d27; --surface-2:#1d2633; --line:#2a3544;
+    --fg:#e6ebf2; --muted:#98a4b5;
+    --accent:#6ea4f5; --accent-soft:#1b2b45; --on-accent:#0b1220;
+    --ok:#54c488; --ok-soft:#14301f;
+    --warn:#e3a74a; --warn-soft:#38290f;
+    --bad:#f27a6e; --bad-soft:#3c1b18;
+    --l1:#22344f; --l2:#2c4a78; --l3:#232c3a; --l4:#1a212c;
+    color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0f141b; --surface:#161d27; --surface-2:#1d2633; --line:#2a3544;
+  --fg:#e6ebf2; --muted:#98a4b5;
+  --accent:#6ea4f5; --accent-soft:#1b2b45; --on-accent:#0b1220;
+  --ok:#54c488; --ok-soft:#14301f;
+  --warn:#e3a74a; --warn-soft:#38290f;
+  --bad:#f27a6e; --bad-soft:#3c1b18;
+  --l1:#22344f; --l2:#2c4a78; --l3:#232c3a; --l4:#1a212c;
+  color-scheme:dark;
+}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}*{transition:none!important}}
+body{
+  margin:0; background:var(--bg); color:var(--fg);
+  font:400 16px/1.65 var(--font-sans); -webkit-text-size-adjust:100%;
+  padding-left:max(16px,env(safe-area-inset-left,0px));
+  padding-right:max(16px,env(safe-area-inset-right,0px));
+}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);background:var(--bg);z-index:50}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+a{color:var(--accent)}
+
+/* shell + contents rail */
+.shell{display:grid;grid-template-columns:240px minmax(0,1fr);gap:56px;max-width:1180px;margin:0 auto;padding-block:40px 96px}
+.rail{position:sticky;top:calc(env(safe-area-inset-top,0px) + 28px);align-self:start;max-height:calc(100vh - 56px);overflow-y:auto;font-size:14px;min-width:0}
+.rail .brand{font:500 12px/1.3 var(--font-mono);letter-spacing:.08em;text-transform:uppercase;color:var(--muted);margin:0 0 14px}
+.rail nav{display:flex;flex-direction:column}
+.rail a{display:block;padding:5px 10px;border-left:2px solid var(--line);color:var(--muted);text-decoration:none}
+.rail a:hover{color:var(--fg)}
+.rail a.sub{padding-left:22px;font-size:13px}
+.rail a.active{color:var(--accent);border-left-color:var(--accent);font-weight:600}
+main{min-width:0}
+
+/* headings and text */
+.eyebrow{font:500 12px/1.4 var(--font-mono);letter-spacing:.1em;text-transform:uppercase;color:var(--accent);margin:0 0 10px}
+h1{font:700 clamp(34px,5vw,52px)/1.08 var(--font-sans);letter-spacing:-.025em;margin:0 0 14px;text-wrap:balance}
+h2{font:700 28px/1.2 var(--font-sans);letter-spacing:-.015em;margin:0;text-wrap:balance}
+h3{font:600 20px/1.3 var(--font-sans);margin:40px 0 12px;text-wrap:balance;scroll-margin-top:24px}
+h4{font:600 15px/1.4 var(--font-sans);margin:22px 0 8px}
+p{margin:0 0 1em}
+.prose>p,.prose>ul,.prose>ol,.note,.hero .subtitle{max-width:68ch}
+.subtitle{font-size:19px;line-height:1.5;color:var(--muted);margin:0 0 22px}
+section{scroll-margin-top:24px;padding-top:64px}
+.sec-head{margin-bottom:8px}
+.hero{padding-bottom:40px;border-bottom:1px solid var(--line)}
+.brief{list-style:none;margin:22px 0 0;padding:0;display:grid;gap:10px;max-width:68ch}
+.brief li{padding-left:22px;position:relative}
+.brief li::before{content:"";position:absolute;left:0;top:.7em;width:10px;height:2px;background:var(--accent)}
+ul.plain,ol.plain{padding-left:20px;margin:0 0 1em}
+ul.plain li,ol.plain li{margin:4px 0}
+
+.tag{display:inline-block;font:500 11px/1 var(--font-mono);letter-spacing:.06em;text-transform:uppercase;padding:4px 6px;border-radius:3px;margin-right:8px;vertical-align:1px}
+.tag.fact{background:var(--accent-soft);color:var(--accent)}
+.tag.infer{background:var(--ok-soft);color:var(--ok)}
+.tag.assume{background:var(--warn-soft);color:var(--warn)}
+.note{border:1px solid var(--line);background:var(--surface-2);padding:12px 14px;font-size:14.5px;margin:18px 0}
+.note p:last-child{margin:0}
+
+/* timeline */
+.timeline{list-style:none;margin:20px 0;padding:0;border-left:2px solid var(--line);max-width:68ch}
+.timeline li{display:grid;grid-template-columns:104px minmax(0,1fr);gap:16px;padding:0 0 18px 18px;position:relative}
+.timeline li::before{content:"";position:absolute;left:-6px;top:.6em;width:10px;height:10px;background:var(--accent)}
+.timeline .yr{font:500 13px/1.7 var(--font-mono);color:var(--accent)}
+
+/* tables */
+.table-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--surface);margin:20px 0}
+table{border-collapse:collapse;width:100%;font-size:14px;min-width:560px}
+th,td{padding:10px 14px;text-align:left;vertical-align:top;border-bottom:1px solid var(--line)}
+th{font:600 12px/1.3 var(--font-sans);text-transform:uppercase;letter-spacing:.06em;color:var(--muted);background:var(--surface-2)}
+tbody tr:last-child td{border-bottom:0}
+td:first-child{font-weight:600}
+.num{font-variant-numeric:tabular-nums}
+.tnote{font-size:13px;color:var(--muted);margin:-8px 0 20px;max-width:68ch}
+
+/* code */
+code,kbd,pre,textarea{font-family:var(--font-mono)}
+code{font-size:.9em;background:var(--surface-2);padding:1px 5px;border-radius:3px}
+pre{margin:16px 0;padding:14px 16px;background:var(--surface-2);border:1px solid var(--line);overflow-x:auto;font-size:13.5px;line-height:1.6}
+pre code{background:none;padding:0;font-size:inherit}
+pre.formula{font-size:17px;font-weight:500;max-width:68ch}
+
+/* figures and svg */
+figure{margin:24px 0}
+.fig{border:1px solid var(--line);background:var(--surface);padding:12px 16px;overflow-x:auto}
+.fig svg{display:block;width:100%;height:auto;min-width:560px}
+figcaption{font-size:13px;color:var(--muted);margin-top:8px;max-width:68ch}
+.sv-text{font:400 12px var(--font-sans);fill:var(--fg)}
+.sv-mute{fill:var(--muted)}
+.sv-strong{font-weight:600}
+.sv-mono{font-family:var(--font-mono);font-size:11px}
+.sv-line{fill:none;stroke:var(--muted);stroke-width:1.5}
+.sv-head{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.sig{fill:none;stroke:var(--accent);stroke-width:2}
+.guide{stroke:var(--line);stroke-dasharray:3 4;stroke-width:1}
+.ah{fill:var(--muted)}
+.lay{stroke:var(--line);stroke-width:1}
+.l1{fill:var(--l1)} .l2{fill:var(--l2)} .l3{fill:var(--l3)} .l4{fill:var(--l4)}
+.gear{fill:var(--surface-2);stroke:var(--muted);stroke-width:2}
+.roller{fill:var(--l2);stroke:var(--accent);stroke-width:2}
+.blade{fill:var(--muted);stroke:none}
+
+/* accordions */
+details{border:1px solid var(--line);background:var(--surface);margin:10px 0}
+details>summary{cursor:pointer;list-style:none;padding:13px 16px;font-weight:600;display:flex;align-items:center;gap:10px}
+details>summary::-webkit-details-marker{display:none}
+details>summary::before{content:"+";font:500 16px var(--font-mono);color:var(--accent);width:16px;text-align:center;flex:none}
+details[open]>summary::before{content:"\2212"}
+details[open]>summary{border-bottom:1px solid var(--line)}
+.dbody{padding:14px 16px 4px}
+.dbody>*{max-width:68ch}
+.dbody>.table-wrap,.dbody>.fig,.dbody>figure,.dbody>pre{max-width:none}
+.btn{font:500 13px var(--font-sans);padding:7px 12px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;border-radius:4px}
+.btn:hover{border-color:var(--accent);color:var(--accent)}
+.toolbar{display:flex;justify-content:flex-end;margin:16px 0 0}
+
+/* instruments (simulator, schematic, decoder) */
+.instrument{border:1px solid var(--line);background:var(--surface);margin:24px 0}
+.instrument-head{display:flex;justify-content:space-between;align-items:center;gap:8px 16px;flex-wrap:wrap;padding:11px 16px;border-bottom:1px solid var(--line);background:var(--surface-2);font:500 12px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.sim{display:grid;grid-template-columns:minmax(0,260px) minmax(0,1fr)}
+.sim-controls{padding:16px;border-right:1px solid var(--line);display:flex;flex-direction:column;gap:18px;min-width:0}
+.sim-view{padding:16px;display:flex;flex-direction:column;gap:16px;min-width:0}
+.ctl label{display:flex;justify-content:space-between;gap:8px;font-size:14px;font-weight:500;margin-bottom:6px}
+.ctl output{font:500 13px var(--font-mono);color:var(--accent);font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;accent-color:var(--accent);margin:0}
+select,textarea{width:100%;padding:8px 10px;border:1px solid var(--line);background:var(--surface);color:var(--fg);font-size:14px;border-radius:4px}
+select{font-family:var(--font-sans)}
+textarea{resize:vertical;line-height:1.5}
+.check{display:flex;gap:10px;align-items:flex-start;font-size:14px;cursor:pointer}
+.check small{color:var(--muted);font-size:12.5px}
+.check input{margin-top:4px;accent-color:var(--accent)}
+canvas{display:block;width:100%;height:auto;border:1px solid var(--line);background:var(--paper)}
+.verdict-row{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center}
+.verdict{display:inline-block;font-weight:600;font-size:14px;padding:6px 10px;border:1px solid;border-radius:3px}
+.v-under{background:var(--surface-2);color:var(--muted);border-color:var(--line)}
+.v-faint{background:var(--surface-2);color:var(--warn);border-color:var(--warn)}
+.v-ok{background:var(--ok-soft);color:var(--ok);border-color:var(--ok)}
+.v-heavy{background:var(--warn-soft);color:var(--warn);border-color:var(--warn)}
+.v-burn{background:var(--bad-soft);color:var(--bad);border-color:var(--bad)}
+.verdict-text{font-size:14.5px;margin:0;color:var(--fg);flex:1 1 260px}
+.readout{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.readout>div{border-top:2px solid var(--line);padding-top:8px}
+.readout .k{font:500 11px var(--font-mono);letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.readout .v{font:500 18px var(--font-mono);font-variant-numeric:tabular-nums}
+.zone{position:relative;margin-top:8px}
+.zone-track{display:flex;height:14px;border:1px solid var(--line)}
+.zone-track span{display:block;height:100%}
+.z-under{width:43.75%;background:var(--surface-2)}
+.z-faint{width:9.375%;background:var(--line)}
+.z-ok{width:18.75%;background:var(--ok-soft);box-shadow:inset 0 0 0 1px var(--ok)}
+.z-heavy{width:9.375%;background:var(--warn-soft)}
+.z-burn{width:18.75%;background:var(--bad-soft)}
+.zone-marker{position:absolute;top:-5px;left:0;width:3px;height:24px;background:var(--fg);transform:translateX(-1.5px)}
+.zone-ticks{position:relative;height:18px;margin-top:6px;font:11px var(--font-mono);color:var(--muted)}
+.zone-ticks span{position:absolute;transform:translateX(-50%)}
+.zone-ticks span:last-child{transform:translateX(-100%)}
+.zone-ticks span:first-child{transform:none}
+
+.diagram{overflow-x:auto;padding:8px 12px}
+.diagram svg{display:block;width:100%;min-width:660px;height:auto}
+.mod{cursor:pointer;outline:none}
+.mod rect{fill:var(--surface);stroke:var(--line);stroke-width:1.5;transition:stroke .15s}
+.mod:hover rect,.mod:focus-visible rect{stroke:var(--accent);stroke-width:2.5}
+.mod.sel rect{fill:var(--accent-soft);stroke:var(--accent);stroke-width:2.5}
+.mod .t{font:600 13px var(--font-sans);fill:var(--fg)}
+.mod .s{font:400 11px var(--font-sans);fill:var(--muted)}
+.wire{fill:none;stroke:var(--muted);stroke-width:1.6}
+.wire.dash{stroke-dasharray:5 4}
+.wire.pwr{stroke:var(--warn);stroke-width:2.4}
+.lbl{font:500 11px var(--font-mono);fill:var(--muted)}
+.lbl.pwr{fill:var(--warn)}
+.detail{padding:14px 16px;border-top:1px solid var(--line);background:var(--surface-2);font-size:14.5px}
+.detail strong{display:block;margin-bottom:4px}
+.detail p{margin:0;max-width:72ch}
+.tip{position:fixed;z-index:60;max-width:260px;padding:8px 10px;font-size:13px;line-height:1.45;background:var(--fg);color:var(--bg);border-radius:4px;pointer-events:none}
+.tip[hidden]{display:none}
+.dec-body{padding:16px;display:flex;flex-direction:column;gap:14px}
+.dec-body .table-wrap{margin:0}
+.dec-body td.hx{font-family:var(--font-mono);font-size:13px;white-space:nowrap}
+.dec-body td.cmd{font-family:var(--font-mono);font-size:13px;white-space:nowrap}
+
+.facts{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 32px;margin:12px 0 0}
+.facts>div{border-top:1px solid var(--line);padding:14px 0 6px;min-width:0}
+.facts h4{margin:0 0 6px}
+.facts p{font-size:15px}
+.sources{padding-left:20px;font-size:14.5px;max-width:78ch}
+.sources li{margin:6px 0}
+
+@media (max-width:940px){
+  .shell{grid-template-columns:minmax(0,1fr);gap:0;padding-top:0}
+  .rail{position:sticky;top:env(safe-area-inset-top,0px);z-index:40;max-height:none;overflow:visible;background:var(--bg);border-bottom:1px solid var(--line);padding:8px 0;margin-bottom:24px}
+  .rail .brand{display:none}
+  .rail nav{flex-direction:row;gap:4px;overflow-x:auto}
+  .rail a{border-left:0;border-bottom:2px solid transparent;white-space:nowrap;padding:6px 10px}
+  .rail a.sub{display:none}
+  .rail a.active{border-bottom-color:var(--accent)}
+  section{scroll-margin-top:72px}
+  h3{scroll-margin-top:72px}
+}
+@media (max-width:760px){
+  .sim{grid-template-columns:minmax(0,1fr)}
+  .sim-controls{border-right:0;border-bottom:1px solid var(--line)}
+  .facts{grid-template-columns:minmax(0,1fr)}
+  .timeline li{grid-template-columns:minmax(0,1fr);gap:2px}
+  .readout{grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+  .readout .v{font-size:15px}
+  h2{font-size:24px}
+}
+/* v2: visual building blocks */
+.dotp{fill:var(--accent)}
+.dotp.hollow{fill:var(--surface);stroke:var(--warn);stroke-width:2}
+.tiles{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px;margin:20px 0}
+.tile{border:1px solid var(--line);background:var(--surface);padding:14px 10px;text-align:center;min-width:0}
+.tile svg{width:56px;height:56px;display:block;margin:0 auto 8px}
+.tile b{display:block;font-size:14px;line-height:1.3;margin-bottom:3px}
+.tile span{display:block;font-size:12.5px;line-height:1.4;color:var(--muted)}
+.ico{fill:none;stroke:var(--accent);stroke-width:2;stroke-linecap:round;stroke-linejoin:round}
+.trio{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:20px 0}
+.trio figure{margin:0;border:1px solid var(--line);background:var(--surface);padding:12px;min-width:0}
+.trio svg{display:block;width:100%;height:auto}
+.trio figcaption{margin:8px 0 0;font-size:13.5px}
+.trio figcaption b{display:block;color:var(--fg);font-size:14px}
+.p-head{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.p-paper{fill:var(--l4);stroke:var(--muted);stroke-width:1}
+.p-ribbon{fill:var(--l2);stroke:var(--accent);stroke-width:1}
+.p-spot{fill:var(--fg)}
+.p-platen{fill:var(--surface-2);stroke:var(--muted);stroke-width:1.5}
+.p-needle{fill:var(--muted)}
+.bars{border:1px solid var(--line);background:var(--surface);padding:14px 16px;margin:12px 0}
+.bars h4{margin:0 0 8px;font-size:14px}
+.bar{display:grid;grid-template-columns:120px minmax(0,1fr) 120px;gap:12px;align-items:center;padding:4px 0;font-size:13.5px}
+.bar .track{display:block;height:14px;background:var(--surface-2)}
+.bar .track i{display:block;height:100%;background:var(--accent)}
+.bar .val{font:500 13px var(--font-mono);font-variant-numeric:tabular-nums}
+.bar.na .track{background:none;border:1px dashed var(--line)}
+.bar.na .val{color:var(--muted);font:400 13px var(--font-sans)}
+.t-ok{width:63.6%;background:var(--ok-soft)}
+.t-warn{width:27.3%;background:var(--warn-soft)}
+.t-bad{width:9.1%;background:var(--bad-soft)}
+.chips{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin:16px 0}
+.chip{border:1px solid var(--line);background:var(--surface);padding:10px 14px;min-width:0}
+.chip b{display:block;font:500 13px var(--font-mono);color:var(--accent)}
+.chip span{font-size:13.5px;color:var(--muted)}
+.fade{display:flex;gap:6px;margin:6px 0}
+.fade i{flex:1;height:34px;background:var(--ink);border:1px solid var(--line)}
+.pair{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:12px 0}
+.pair>*{min-width:0}
+@media (max-width:940px){.tiles{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.tiles.t3{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:760px){.trio,.chips,.pair{grid-template-columns:minmax(0,1fr)}.bar{grid-template-columns:92px minmax(0,1fr) 92px;gap:8px}}
+@media (max-width:520px){.tiles{grid-template-columns:repeat(2,minmax(0,1fr))}}
+/* touch page additions */
+.seg{display:flex;flex-wrap:wrap;margin:0 0 14px}
+.seg button{font:500 13px var(--font-sans);padding:8px 14px;border:1px solid var(--line);background:var(--surface);color:var(--fg);cursor:pointer;margin-right:-1px;margin-bottom:-1px}
+.seg button:hover{border-color:var(--accent)}
+.seg button[aria-pressed="true"]{background:var(--accent-soft);color:var(--accent);border-color:var(--accent);position:relative;z-index:1}
+.quad{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:20px 0}
+.quad figure{margin:0;border:1px solid var(--line);background:var(--surface);padding:10px;min-width:0}
+.quad svg{display:block;width:100%;height:auto}
+.quad figcaption{margin:6px 0 0;font-size:13px}
+.quad figcaption b{display:block;color:var(--fg);font-size:14px}
+@media (max-width:940px){.quad{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:520px){.quad{grid-template-columns:minmax(0,1fr)}}
+.dots{font-size:15px;letter-spacing:2px;color:var(--accent);white-space:nowrap}
+.dots i{font-style:normal;color:var(--line)}
+.etx{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.erx{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.5}
+.fld{fill:none;stroke:var(--accent);stroke-width:1.5}
+.fld.weak{stroke-dasharray:4 4;opacity:.6}
+.fld.div{stroke:var(--warn);stroke-dasharray:3 3}
+.finger{fill:var(--surface-2);stroke:var(--muted);stroke-width:1.5}
+.node{fill:var(--accent);opacity:.85}
+.lay.sens{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.sens-t{font-weight:600;fill:var(--accent)}
+.beam{stroke:var(--warn);stroke-width:1.5;stroke-dasharray:4 3;fill:none}
+.led{fill:var(--warn)}
+.wave{fill:none;stroke:var(--accent);stroke-width:1.5}
+.bytes{display:flex;flex-wrap:wrap;gap:8px;margin:16px 0}
+.byte{border:1px solid var(--line);background:var(--surface);padding:8px 10px;min-width:92px;flex:1 1 110px}
+.byte b{display:block;font:500 15px var(--font-mono);color:var(--accent);font-variant-numeric:tabular-nums}
+.byte span{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+.byte.dim b{color:var(--muted)}
+.tddi{fill:none;stroke:var(--accent);stroke-width:2;stroke-dasharray:6 4}
+.tddi-t{font:600 12px var(--font-sans);fill:var(--accent)}
+#tcv{background:var(--surface-2);touch-action:none;cursor:crosshair}
+.rbar{position:relative;height:20px;border:1px solid var(--line);background:linear-gradient(to right,var(--surface-2),var(--accent))}
+.rbar i{position:absolute;top:-5px;width:3px;height:28px;background:var(--fg);transform:translateX(-1.5px)}
+.lane-d{fill:var(--accent-soft);stroke:var(--accent);stroke-width:1.5}
+.lane-t{fill:var(--warn-soft);stroke:var(--warn);stroke-width:1.5}
+.band{fill:var(--accent-soft);opacity:.7}
+.thr{stroke:var(--warn);stroke-width:1.5;stroke-dasharray:6 4}
+.sig{fill:none;stroke:var(--accent);stroke-width:2}
+.hint{font-size:13px;color:var(--muted);margin:0}
+.chk{display:flex;align-items:center;gap:8px;font-size:14px;margin:0 0 12px}
+.chk input{accent-color:var(--accent)}
+</style>
+<div class="shell">
+<aside class="rail" aria-label="Съдържание">
+  <p class="brand">Съдържание</p>
+  <nav id="toc">
+    <a href="#s1">1 Приложение</a>
+    <a class="sub" href="#s1-1">1.1 История</a>
+    <a class="sub" href="#s1-2">1.2 Къде се ползва</a>
+    <a class="sub" href="#s1-3">1.3 Технологии</a>
+    <a href="#s2">2 Как работи</a>
+    <a class="sub" href="#s2-1">2.1 Слоеве</a>
+    <a class="sub" href="#s2-2">2.2 Капацитет и пръст</a>
+    <a class="sub" href="#s2-3">2.3 Матрица</a>
+    <a class="sub" href="#s2-4">2.4 Сканиране</a>
+    <a class="sub" href="#s2-5">2.5 Резистивен екран</a>
+    <a class="sub" href="#s2-6">2.6 Интерфейс и HID</a>
+    <a class="sub" href="#s2-7">2.7 Блок-схема</a>
+    <a href="#s3">3 Практика</a>
+    <a class="sub" href="#s3-1">3.1 Симулатор</a>
+    <a class="sub" href="#s3-2">3.2 Любопитни факти</a>
+    <a href="#src">Източници</a>
+  </nav>
+</aside>
+
+<main id="top">
+<header class="hero">
+  <p class="eyebrow">Компютърна периферия · курсова работа</p>
+  <h1>Сензорни екрани</h1>
+  <p class="subtitle">Как екранът разбира къде е пръстът: решетка от електроди, измерване на капацитет и един малък пакет данни към компютъра.</p>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 720 250" role="img" aria-labelledby="hvT hvD">
+        <title id="hvT">Пръст върху капацитивен екран</title>
+        <desc id="hvD">Разрез: пръст над покривно стъкло, под него електроди Tx и Rx и дисплей. Част от електрическото поле между Tx и Rx се отклонява към пръста.</desc>
+        <rect class="finger" x="360" y="6" width="100" height="104" rx="44"/>
+        <text class="sv-text sv-strong" x="410" y="62" text-anchor="middle">Пръст</text>
+        <rect class="lay l1" x="40" y="110" width="640" height="30"/>
+        <rect class="lay l4" x="40" y="140" width="640" height="10"/>
+        <rect class="lay l3" x="40" y="150" width="640" height="20"/>
+        <rect class="lay l3" x="40" y="170" width="640" height="50"/>
+        <text class="sv-text sv-mute" x="668" y="129" text-anchor="end">Покривно стъкло</text>
+        <text class="sv-text sv-mute" x="668" y="200" text-anchor="end">Дисплей</text>
+        <rect class="etx" x="90" y="154" width="40" height="12"/><text class="sv-text sv-mono" x="110" y="164" text-anchor="middle">Tx</text>
+        <rect class="erx" x="170" y="154" width="40" height="12"/><text class="sv-text sv-mono" x="190" y="164" text-anchor="middle">Rx</text>
+        <rect class="etx" x="350" y="154" width="40" height="12"/><text class="sv-text sv-mono" x="370" y="164" text-anchor="middle">Tx</text>
+        <rect class="erx" x="430" y="154" width="40" height="12"/><text class="sv-text sv-mono" x="450" y="164" text-anchor="middle">Rx</text>
+        <path class="fld" d="M110 152C110 118 190 118 190 152"/>
+        <path class="fld" d="M118 152C118 132 182 132 182 152"/>
+        <path class="fld weak" d="M370 152C370 118 450 118 450 152"/>
+        <path class="fld div" d="M382 150L400 112"/>
+        <path class="fld div" d="M438 150L420 112"/>
+        <text class="sv-text sv-mute" x="150" y="92" text-anchor="middle">полето Tx → Rx</text>
+        <text class="sv-text sv-mute" x="150" y="106" text-anchor="middle">без пръст</text>
+        <text class="sv-text sv-mute" x="500" y="52">пръстът отвежда част</text>
+        <text class="sv-text sv-mute" x="500" y="68">от полето: капацитетът пада</text>
+      </svg>
+    </div>
+    <figcaption>Контролерът не измерва натиск. Той измерва колко е намалял капацитетът между две съседни линии под стъклото.</figcaption>
+  </figure>
+</header>
+
+<section id="s1">
+  <div class="sec-head"><p class="eyebrow">Раздел 1</p><h2>Приложение и значение</h2></div>
+
+  <div class="prose">
+    <h3 id="s1-1">1.1 История</h3>
+    <p>Идеята е от 60-те години, но масов продукт става чак с iPhone през 2007 г. Дотогава в телефоните и PDA устройствата преобладава резистивният екран със стилус.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 720 140" role="img" aria-label="Хронология на сензорните екрани">
+        <line class="sv-line" x1="30" y1="52" x2="690" y2="52"/>
+        <circle class="dotp" cx="72" cy="52" r="7"/><circle class="dotp" cx="216" cy="52" r="7"/><circle class="dotp" cx="360" cy="52" r="7"/><circle class="dotp" cx="504" cy="52" r="7"/><circle class="dotp" cx="648" cy="52" r="7"/>
+        <g class="sv-text sv-strong sv-mono" text-anchor="middle" style="fill:var(--accent);font-size:13px">
+          <text x="72" y="32">1965</text><text x="216" y="32">1974</text><text x="360" y="32">1982–84</text><text x="504" y="32">2007</text><text x="648" y="32">2012</text>
+        </g>
+        <g class="sv-text" text-anchor="middle">
+          <text x="72" y="80">Johnson (Малвърн):</text><text x="72" y="96">първият капацитивен</text><text x="72" y="112">допирен екран</text>
+          <text x="216" y="80">Hurst / Elographics:</text><text x="216" y="96">първият прозрачен</text><text x="216" y="112">резистивен екран</text>
+          <text x="360" y="80">Торонто, Bell Labs:</text><text x="360" y="96">първият multi-touch</text><text x="360" y="112">(1982 и 1984)</text>
+          <text x="504" y="80">iPhone:</text><text x="504" y="96">PCAP multi-touch</text><text x="504" y="112">за масовия пазар</text>
+          <text x="648" y="80">HID over I2C:</text><text x="648" y="96">стандарт за тъч</text><text x="648" y="112">(Windows 8)</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>Датите в различните сайтове се разминават. Тук 1965 е годината на първата публикация на Johnson (<em>Electronics Letters</em>). При Hurst 1971 е непрозрачен сензор, 1974 първият прозрачен, а 1977 5-wire технологията.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3 id="s1-2">1.2 Къде се ползва</h3>
+  </div>
+  <div class="tiles t3">
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><rect x="20" y="6" width="24" height="52" rx="4"/><path d="M28 52h8M26 12h12"/></g></svg><b>Смартфони и таблети</b><span>PCAP, multi-touch</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><rect x="10" y="14" width="44" height="28" rx="2"/><path d="M4 48h56l-5 6H9zM34 22l10 10"/></g></svg><b>Лаптопи 2-в-1</b><span>PCAP и активен стилус</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><rect x="14" y="6" width="36" height="52" rx="3"/><rect x="19" y="12" width="26" height="12"/><path d="M22 32h4M30 32h4M38 32h4M22 40h4M30 40h4M38 40h4M22 48h4M30 48h4M38 48h4"/></g></svg><b>POS и банкомати</b><span>резистивен, SAW или PCAP</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><rect x="10" y="8" width="44" height="32" rx="2"/><path d="M32 40v12M20 56h24"/></g></svg><b>Киоски и табла</b><span>SAW, инфрачервен или PCAP</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M8 44l6-16h36l6 16v8h-8v-5H16v5H8z"/><circle cx="20" cy="38" r="2"/><circle cx="44" cy="38" r="2"/></g></svg><b>Автомобили</b><span>PCAP с режим за ръкавица</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><circle cx="32" cy="32" r="22"/><path d="M32 20v24M20 32h24"/></g></svg><b>Индустрия и медицина</b><span>запечатан PCAP или резистивен</span></div>
+  </div>
+  <p class="tnote">Тъч контролерът в конкретен лаптоп, например Lenovo Yoga: Нямам информация.</p>
+
+  <div class="prose">
+    <h3 id="s1-3">1.3 Четири технологии</h3>
+    <p>Всички решават един и същ въпрос: къде е допирът. Различават се по това какво усещат.</p>
+  </div>
+  <div class="quad">
+    <figure>
+      <svg viewBox="0 0 220 110" aria-hidden="true">
+        <rect class="lay l3" x="20" y="82" width="180" height="12"/>
+        <path class="sv-line" style="stroke:var(--accent);stroke-width:5" d="M20 44H85L110 80L135 44H200"/>
+        <circle class="ah" cx="55" cy="63" r="2"/><circle class="ah" cx="165" cy="63" r="2"/>
+        <path class="finger" d="M100 8L120 8L110 42z"/>
+      </svg>
+      <figcaption><b>Резистивен</b>Натискът събира два слоя.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 220 110" aria-hidden="true">
+        <rect class="lay l1" x="20" y="50" width="180" height="16"/>
+        <rect class="etx" x="34" y="70" width="22" height="8"/><rect class="erx" x="64" y="70" width="22" height="8"/><rect class="etx" x="94" y="70" width="22" height="8"/><rect class="erx" x="124" y="70" width="22" height="8"/><rect class="etx" x="154" y="70" width="22" height="8"/>
+        <circle class="finger" cx="105" cy="26" r="20"/>
+        <path class="fld div" d="M100 72L102 48M124 72L112 48"/>
+      </svg>
+      <figcaption><b>Капацитивен (PCAP)</b>Пръстът променя капацитета.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 220 110" aria-hidden="true">
+        <rect x="30" y="16" width="160" height="80" fill="none" style="stroke:var(--line);stroke-width:2"/>
+        <circle class="led" cx="30" cy="34" r="3"/><circle class="led" cx="30" cy="56" r="3"/><circle class="led" cx="30" cy="78" r="3"/>
+        <circle class="led" cx="62" cy="16" r="3"/><circle class="led" cx="110" cy="16" r="3"/><circle class="led" cx="158" cy="16" r="3"/>
+        <path class="beam" d="M33 34H187M33 56H187M33 78H187M62 19V93M110 19V93M158 19V93"/>
+        <circle class="finger" cx="110" cy="56" r="11"/>
+      </svg>
+      <figcaption><b>Инфрачервен</b>Пръстът прекъсва лъчи.</figcaption>
+    </figure>
+    <figure>
+      <svg viewBox="0 0 220 110" aria-hidden="true">
+        <rect class="lay l1" x="30" y="30" width="160" height="56"/>
+        <rect class="etx" x="18" y="52" width="12" height="16"/>
+        <path class="wave" d="M34 58q8 -12 16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0"/>
+        <path class="wave" style="opacity:.5" d="M34 72q8 -12 16 0t16 0t16 0t16 0t16 0t16 0t16 0t16 0"/>
+        <circle class="finger" cx="120" cy="22" r="14"/>
+      </svg>
+      <figcaption><b>SAW</b>Пръстът поглъща вълна по стъклото.</figcaption>
+    </figure>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Качество</th><th>Резистивен</th><th>PCAP</th><th>Инфрачервен</th><th>SAW</th></tr></thead>
+      <tbody>
+        <tr><td>Multi-touch</td><td><span class="dots" role="img" aria-label="1 от 4">●<i>●●●</i></span></td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td></tr>
+        <tr><td>Ръкавица и стилус</td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td></tr>
+        <tr><td>Вода и капки</td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td></tr>
+        <tr><td>Прозрачност</td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td></tr>
+        <tr><td>Ниска цена</td><td><span class="dots" role="img" aria-label="4 от 4">●●●●</span></td><td><span class="dots" role="img" aria-label="2 от 4">●●<i>●●</i></span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td><td><span class="dots" role="img" aria-label="3 от 4">●●●<i>●</i></span></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p class="tnote">Ориентировъчна качествена оценка (4 точки са най-добре), по сравнението на Elo. Не са измерени стойности.</p>
+  <div class="note"><p><span class="tag infer">Извод</span>PCAP води, защото е единствената технология с истински multi-touch и гладко стъкло без износване. Резистивният остава за подпис и ръкавици, а инфрачервеният и SAW са за големи екрани. Според Elo инфрачервеният е единствената технология, препоръчана за метални ръкавици.</p></div>
+</section>
+<section id="s2">
+  <div class="sec-head"><p class="eyebrow">Раздел 2</p><h2>Как работи проекционно-капацитивният екран</h2></div>
+
+  <div class="prose">
+    <h3 id="s2-1">2.1 Слоеве</h3>
+    <p>Под покривното стъкло има решетка от прозрачни електроди. Къде точно е тя, определя типа на екрана. Изберете конструкция и вижте къде е сензорът.</p>
+  </div>
+  <div class="instrument">
+    <div class="instrument-head"><span>Разрез на екрана</span><span>изберете конструкция</span></div>
+    <div style="padding:16px">
+      <div class="seg" id="stkSeg" role="group" aria-label="Конструкция на екрана">
+        <button type="button" data-k="gff" aria-pressed="false">GFF</button>
+        <button type="button" data-k="ogs" aria-pressed="false">OGS</button>
+        <button type="button" data-k="oncell" aria-pressed="true">On-cell</button>
+        <button type="button" data-k="incell" aria-pressed="false">In-cell</button>
+      </div>
+      <div class="diagram" style="padding:0">
+        <svg id="stkSvg" viewBox="0 0 720 330" role="img" aria-label="Слоеве на сензорен екран"></svg>
+      </div>
+      <p id="stkText" style="margin:12px 0 0;max-width:72ch"></p>
+    </div>
+  </div>
+  <p class="tnote">Схематично, не е в мащаб. Покривното стъкло е химически закалено, а лепилото (OCA) премахва въздушната междина. За електродите се ползва ITO, а при големи и гъвкави екрани и metal mesh или сребърни нанонишки.</p>
+
+  <div class="prose">
+    <h3 id="s2-2">2.2 Как пръстът променя капацитета</h3>
+    <p>Между Tx и Rx електродите има електрическо поле, а заедно с него и малък капацитет. Пръстът е заземен проводник и отвежда част от полето към себе си, затова взаимният капацитет на този възел намалява. Контролерът търси точно тази промяна.</p>
+  </div>
+  <div class="pair">
+    <figure style="margin:0">
+      <div class="fig">
+        <svg viewBox="0 0 300 150" role="img" aria-label="Без пръст">
+          <rect class="lay l1" x="10" y="60" width="280" height="24"/>
+          <rect class="etx" x="60" y="92" width="50" height="12"/><text class="sv-text sv-mono" x="85" y="102" text-anchor="middle">Tx</text>
+          <rect class="erx" x="190" y="92" width="50" height="12"/><text class="sv-text sv-mono" x="215" y="102" text-anchor="middle">Rx</text>
+          <path class="fld" d="M85 90C85 36 215 36 215 90"/>
+          <path class="fld" d="M95 90C95 58 205 58 205 90"/>
+          <text class="sv-text sv-strong" x="150" y="130" text-anchor="middle">Без пръст: капацитетът е пълен</text>
+        </svg>
+      </div>
+    </figure>
+    <figure style="margin:0">
+      <div class="fig">
+        <svg viewBox="0 0 300 150" role="img" aria-label="С пръст">
+          <circle class="finger" cx="150" cy="22" r="22"/>
+          <rect class="lay l1" x="10" y="60" width="280" height="24"/>
+          <rect class="etx" x="60" y="92" width="50" height="12"/><text class="sv-text sv-mono" x="85" y="102" text-anchor="middle">Tx</text>
+          <rect class="erx" x="190" y="92" width="50" height="12"/><text class="sv-text sv-mono" x="215" y="102" text-anchor="middle">Rx</text>
+          <path class="fld weak" d="M85 90C85 36 215 36 215 90"/>
+          <path class="fld div" d="M100 90C110 70 130 56 140 46"/>
+          <path class="fld div" d="M200 90C190 70 170 56 160 46"/>
+          <text class="sv-text sv-strong" x="150" y="130" text-anchor="middle">С пръст: капацитетът пада</text>
+        </svg>
+      </div>
+    </figure>
+  </div>
+  <div class="chips">
+    <div class="chip"><b>около 1 pF</b><span>типична промяна при допир (Microchip)</span></div>
+    <div class="chip"><b>около 0,1 pF</b><span>най-слабият допир, който се тества (Infineon)</span></div>
+    <div class="chip"><b>няколко pF</b><span>базов капацитет на възел, затова се мери разликата</span></div>
+  </div>
+  <div class="pair">
+    <div class="note"><p><b>Mutual (взаимен капацитет).</b> Измерва се всеки възел Tx × Rx. Дава истински multi-touch. Изолирана водна капка не го заблуждава.</p></div>
+    <div class="note"><p><b>Self (собствен капацитет).</b> Измерва се всяка линия спрямо земята. Сигналът е по-силен, затова се ползва за hover и ръкавици, но два пръста дават четири кандидат-точки.</p></div>
+  </div>
+  <div class="note"><p><span class="tag infer">Извод</span>Self е „радарът“ (засича, че нещо идва), mutual е „фотоапаратът“ (снима всеки възел). maXTouch и TrueTouch комбинират и двата режима. Какво прави всеки, се вижда в симулатора по-долу.</p></div>
+
+  <div class="prose">
+    <h3 id="s2-3">2.3 Матрицата от електроди</h3>
+    <p>Tx линиите са колони, Rx линиите са редове, а всяко пресичане е възел. Стъпката е около 5 mm, а пръстът е широк около 8 mm. Така пръстът винаги покрива два-три електрода и позицията може да се изчисли между тях.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg id="mxSvg" viewBox="0 0 720 240" role="img" aria-labelledby="mxT mxD">
+        <title id="mxT">Решетка от Tx и Rx електроди с пръст</title>
+        <desc id="mxD">Вертикални Tx и хоризонтални Rx линии. Кръгът на пръста покрива няколко възела и колкото по-близо до центъра, толкова по-голям е сигналът.</desc>
+        <g id="mxLines"></g>
+        <circle cx="300" cy="105" r="40" class="finger" style="fill:none;stroke-dasharray:5 4"/>
+        <g id="mxNodes"></g>
+        <path class="sv-line" d="M250 206H300M250 200V212M300 200V212"/>
+        <text class="sv-text sv-mono" x="275" y="228" text-anchor="middle">стъпка ≈ 5 mm</text>
+        <text class="sv-text sv-mono" x="360" y="228">пръст ≈ 8 mm</text>
+        <text class="sv-text sv-strong" x="560" y="40">Tx — възбуждане</text>
+        <text class="sv-text sv-strong" x="560" y="60">Rx — измерване</text>
+        <text class="sv-text sv-mute" x="560" y="86">Телефон от 6″ има около</text>
+        <text class="sv-text sv-mute" x="560" y="102">400 възела, но милиони</text>
+        <text class="sv-text sv-mute" x="560" y="118">пиксели: затова позицията</text>
+        <text class="sv-text sv-mute" x="560" y="134">се изчислява чрез интерполация.</text>
+      </svg>
+    </div>
+    <figcaption>Големината на точките показва силата на сигнала във всеки възел.</figcaption>
+  </figure>
+
+  <div class="prose">
+    <h3 id="s2-4">2.4 Сканиране и изчисляване на позицията</h3>
+    <p>Тъч контролерът повтаря една и съща последователност десетки до стотици пъти в секунда.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 740 180" role="img" aria-labelledby="plT plD">
+        <title id="plT">Конвейер на тъч контролера</title>
+        <desc id="plD">Осем стъпки: Tx импулси, Rx измерване, АЦП, изваждане на baseline, праг, центроид, tracking и HID отчет.</desc>
+        <defs><marker id="pa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
+        <g class="mod" style="cursor:default"><rect x="10" y="10" width="150" height="56"/><text class="t" x="85" y="34" text-anchor="middle">1 Tx импулси</text><text class="s" x="85" y="52" text-anchor="middle">възбуждане на линия</text></g>
+        <g class="mod" style="cursor:default"><rect x="196" y="10" width="150" height="56"/><text class="t" x="271" y="34" text-anchor="middle">2 Rx измерване</text><text class="s" x="271" y="52" text-anchor="middle">заряд през възела</text></g>
+        <g class="mod" style="cursor:default"><rect x="382" y="10" width="150" height="56"/><text class="t" x="457" y="34" text-anchor="middle">3 АЦП</text><text class="s" x="457" y="52" text-anchor="middle">суров брой (raw)</text></g>
+        <g class="mod" style="cursor:default"><rect x="568" y="10" width="150" height="56"/><text class="t" x="643" y="34" text-anchor="middle">4 − baseline</text><text class="s" x="643" y="52" text-anchor="middle">само промяната</text></g>
+        <g class="mod" style="cursor:default"><rect x="10" y="108" width="150" height="56"/><text class="t" x="85" y="132" text-anchor="middle">5 Праг</text><text class="s" x="85" y="150" text-anchor="middle">кои възли са активни</text></g>
+        <g class="mod" style="cursor:default"><rect x="196" y="108" width="150" height="56"/><text class="t" x="271" y="132" text-anchor="middle">6 Центроид</text><text class="s" x="271" y="150" text-anchor="middle">позиция между възлите</text></g>
+        <g class="mod" style="cursor:default"><rect x="382" y="108" width="150" height="56"/><text class="t" x="457" y="132" text-anchor="middle">7 Tracking</text><text class="s" x="457" y="150" text-anchor="middle">постоянен Contact ID</text></g>
+        <g class="mod" style="cursor:default"><rect x="568" y="108" width="150" height="56"/><text class="t" x="643" y="132" text-anchor="middle">8 HID отчет + INT</text><text class="s" x="643" y="150" text-anchor="middle">данни към хоста</text></g>
+        <path class="wire" d="M160 38H196" marker-end="url(#pa)"/><path class="wire" d="M346 38H382" marker-end="url(#pa)"/><path class="wire" d="M532 38H568" marker-end="url(#pa)"/>
+        <path class="wire" d="M643 66V87H85V108" marker-end="url(#pa)"/>
+        <path class="wire" d="M160 136H196" marker-end="url(#pa)"/><path class="wire" d="M346 136H382" marker-end="url(#pa)"/><path class="wire" d="M532 136H568" marker-end="url(#pa)"/>
+      </svg>
+    </div>
+  </figure>
+  <div class="prose">
+    <h3 style="font-size:17px;margin-top:28px">Сигнал, шум и праг</h3>
+    <p>Baseline е нивото без допир, което се обновява бавно (температура, стареене). Прагът е над шума и под сигнала на най-слабия валиден допир. Контролерът изисква сигналът да е поне пет пъти над пиковия шум (SNR ≥ 5:1, Infineon).</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg id="snSvg" viewBox="0 0 720 200" role="img" aria-labelledby="snT snD">
+        <title id="snT">Сигнал, шум и праг</title>
+        <desc id="snD">Сигнал на един възел във времето: шум около baseline, после допир, който надхвърля прага.</desc>
+        <rect class="band" x="40" y="140" width="640" height="20"/>
+        <line class="guide" style="stroke-dasharray:none" x1="40" y1="150" x2="680" y2="150"/>
+        <line class="thr" x1="40" y1="104" x2="680" y2="104"/>
+        <polyline id="snLine" class="sig" points=""/>
+        <path class="sv-line" d="M520 150V70M514 150H526M514 70H526"/>
+        <path class="sv-line" d="M70 140V160M64 140H76M64 160H76"/>
+        <g class="sv-text sv-mono">
+          <text x="534" y="114">S — сигнал</text>
+          <text x="84" y="175">N — шум (пик-пик)</text>
+          <text x="44" y="98" style="fill:var(--warn)">праг</text>
+          <text x="44" y="190" class="sv-mute">baseline</text>
+          <text x="330" y="40" class="sv-mute">допир</text>
+        </g>
+      </svg>
+    </div>
+    <figcaption>Ако шумът е голям, SNR пада и прагът трябва да се вдигне. Тогава слабите допири (ръкавица) вече не се засичат. Това е компромисът, който се вижда в симулатора.</figcaption>
+  </figure>
+  <div class="bars">
+    <h4>Честота на отчитане (Hz)</h4>
+    <div class="bar"><span>FT5x06</span><span class="track"><i style="width:6.25%"></i></span><span class="val">60</span></div>
+    <div class="bar"><span>Cypress</span><span class="track"><i style="width:10.4%"></i></span><span class="val">до 100</span></div>
+    <div class="bar"><span>maXTouch</span><span class="track"><i style="width:26%"></i></span><span class="val">до 250</span></div>
+    <div class="bar"><span>Гейминг</span><span class="track"><i style="width:75%"></i></span><span class="val">720</span></div>
+    <div class="bar"><span>RedMagic</span><span class="track"><i style="width:100%"></i></span><span class="val">960 *</span></div>
+  </div>
+  <p class="tnote">Честотата пада с броя пръсти и размера на екрана (компромис скорост ↔ SNR). * Маркетингова стойност, не е независимо проверена.</p>
+
+  <div class="prose">
+    <h3 id="s2-5">2.5 Резистивният екран</h3>
+    <p>За сравнение: резистивният екран е два проводящи слоя. Натискът ги събира и образува делител на напрежение. Контролерът чете напрежението и от него изчислява позицията по X, после сменя посоките и изчислява Y.</p>
+  </div>
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 440 170" role="img" aria-labelledby="rsT rsD">
+        <title id="rsT">Разрез на резистивен екран</title>
+        <desc id="rsD">Горният гъвкав слой се огъва при натиск и докосва долния слой на стъклото. Между слоевете има микроточки.</desc>
+        <path class="finger" d="M214 6L240 6L227 44z"/>
+        <path style="fill:none;stroke:var(--accent);stroke-width:6" d="M20 54H175L227 100L279 54H420"/>
+        <rect class="lay l2" x="20" y="104" width="400" height="6"/>
+        <rect class="lay l1" x="20" y="110" width="400" height="18"/>
+        <circle class="ah" cx="70" cy="80" r="2.5"/><circle class="ah" cx="130" cy="80" r="2.5"/><circle class="ah" cx="330" cy="80" r="2.5"/><circle class="ah" cx="390" cy="80" r="2.5"/>
+        <g class="sv-text sv-mute">
+          <text x="20" y="44">горен слой (ITO върху PET)</text>
+          <text x="20" y="148">долен слой (ITO върху стъкло)</text>
+          <text x="248" y="26">допир</text>
+          <text x="330" y="96">микроточки</text>
+        </g>
+      </svg>
+    </div>
+  </figure>
+  <div class="instrument">
+    <div class="instrument-head"><span>Делител на напрежение</span><span>Vref = 3 V</span></div>
+    <div style="padding:16px;display:flex;flex-direction:column;gap:14px">
+      <div class="ctl">
+        <label for="rsPos">Позиция на допира по X <output id="rsOut" for="rsPos">33 %</output></label>
+        <input id="rsPos" type="range" min="0" max="100" step="1" value="33">
+      </div>
+      <div class="rbar" aria-hidden="true"><i id="rsMark" style="left:33%"></i></div>
+      <p id="rsText" style="margin:0"></p>
+    </div>
+  </div>
+  <pre class="formula">X = V(Y+) / Vref · ширина</pre>
+  <p class="tnote">При 4-wire екран слоевете се четат последователно: първо X, после Y. 5-wire екранът е по-траен, защото горният лист е само сонда и драскотините почти не влияят (NXP).</p>
+
+  <div class="prose">
+    <h3 id="s2-6">2.6 Интерфейс и HID отчет</h3>
+    <p>Когато контролерът има нови данни, той сваля линията INT. Хостът отговаря и чете готов пакет по стандартен протокол, затова не е нужен специален драйвер.</p>
+  </div>
+  <div class="chips">
+    <div class="chip"><b>I2C</b><span>телефони, таблети, лаптопи; HID over I2C от Windows 8</span></div>
+    <div class="chip"><b>SPI</b><span>по-бърз; HID over SPI в Windows 11</span></div>
+    <div class="chip"><b>USB</b><span>външни монитори и киоски; клас HID</span></div>
+  </div>
+  <div class="bytes" aria-label="Структура на HID отчет">
+    <div class="byte"><b>Report ID</b><span>кой отчет е това</span></div>
+    <div class="byte"><b>Tip · Confidence</b><span>докосва ли и пръст ли е</span></div>
+    <div class="byte"><b>Contact ID</b><span>кой пръст</span></div>
+    <div class="byte"><b>X</b><span>2 байта</span></div>
+    <div class="byte"><b>Y</b><span>2 байта</span></div>
+    <div class="byte dim"><b>… още контакти</b><span>същите полета за всеки пръст</span></div>
+    <div class="byte"><b>Scan Time</b><span>момент на сканиране (×100 µs)</span></div>
+    <div class="byte"><b>Contact Count</b><span>колко пръста</span></div>
+  </div>
+  <p class="tnote"><span class="tag assume">Допускане</span>Подредбата е илюстративна: реалната зависи от дескриптора на устройството. Стандартът е Digitizers (Usage Page 0x0D), колекция Touch Screen. Пример (Microsoft): X = 2048 при логически максимум 4095 и физическа ширина 12,05″ дава около 6,03″.</p>
+
+  <div class="prose">
+    <h3 id="s2-7">2.7 Блок-схема</h3>
+    <p>Посочете или докоснете модул, за да видите ролята му. Оранжевите линии са захранване, пунктираната е синхронизацията между дисплея и тъча.</p>
+  </div>
+  <div class="instrument">
+    <div class="instrument-head"><span>Блок-схема на сензорен екран</span><span>изберете модул</span></div>
+    <div class="diagram">
+      <svg viewBox="0 0 820 400" role="group" aria-label="Блок-схема на сензорен екран">
+        <defs><marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path class="ah" d="M0 0L10 5L0 10z"/></marker></defs>
+        <rect id="tddi" class="tddi" x="236" y="26" width="198" height="336" rx="6" hidden/>
+        <text id="tddiT" class="tddi-t" x="335" y="384" text-anchor="middle" hidden>TDDI: тъч и дисплей в един чип</text>
+        <path class="wire" d="M250 70H160" marker-end="url(#arr)"/>
+        <path class="wire" d="M160 112H250" marker-end="url(#arr)"/>
+        <path class="wire" d="M420 70H520" marker-start="url(#arr)" marker-end="url(#arr)"/>
+        <path class="wire" d="M420 98H520" marker-end="url(#arr)"/>
+        <path class="wire" d="M520 126H420" marker-end="url(#arr)"/>
+        <path class="wire" d="M590 140V290H420" marker-end="url(#arr)"/>
+        <path class="wire dash" d="M335 240V140" marker-end="url(#arr)"/>
+        <path class="wire" d="M250 290H160" marker-end="url(#arr)"/>
+        <path class="wire pwr" d="M750 150V12H335V40" marker-end="url(#arr)"/>
+        <path class="wire pwr" d="M750 250V372H335V340" marker-end="url(#arr)"/>
+        <text class="lbl" x="205" y="64" text-anchor="middle">Tx</text>
+        <text class="lbl" x="205" y="106" text-anchor="middle">Rx</text>
+        <text class="lbl" x="470" y="62" text-anchor="middle">I2C / SPI / USB</text>
+        <text class="lbl" x="470" y="92" text-anchor="middle">INT</text>
+        <text class="lbl" x="470" y="120" text-anchor="middle">RESET</text>
+        <text class="lbl" x="598" y="218">MIPI DSI</text>
+        <text class="lbl" x="598" y="232">(видео)</text>
+        <text class="lbl" x="343" y="196">синхрон.</text>
+        <text class="lbl" x="205" y="282" text-anchor="middle">пиксели</text>
+        <text class="lbl pwr" x="560" y="6" text-anchor="middle">захранване на тъча и дисплея</text>
+
+        <g class="mod" data-id="sensor" tabindex="0" role="button" aria-label="Сензорна матрица"><rect x="20" y="50" width="140" height="80"/><text class="t" x="90" y="86" text-anchor="middle">Сензорна матрица</text><text class="s" x="90" y="104" text-anchor="middle">Tx × Rx електроди</text></g>
+        <g class="mod sel" data-id="ctl" tabindex="0" role="button" aria-label="Тъч контролер"><rect x="250" y="40" width="170" height="100"/><text class="t" x="335" y="82" text-anchor="middle">Тъч контролер</text><text class="s" x="335" y="100" text-anchor="middle">AFE + MCU</text></g>
+        <g class="mod" data-id="host" tabindex="0" role="button" aria-label="Хост"><rect x="520" y="40" width="140" height="100"/><text class="t" x="590" y="82" text-anchor="middle">Хост</text><text class="s" x="590" y="100" text-anchor="middle">SoC / CPU + ОС</text></g>
+        <g class="mod" data-id="ddi" tabindex="0" role="button" aria-label="Драйвер на дисплея"><rect x="250" y="240" width="170" height="100"/><text class="t" x="335" y="282" text-anchor="middle">Драйвер на дисплея</text><text class="s" x="335" y="300" text-anchor="middle">DDI</text></g>
+        <g class="mod" data-id="display" tabindex="0" role="button" aria-label="Дисплей"><rect x="20" y="250" width="140" height="80"/><text class="t" x="90" y="286" text-anchor="middle">Дисплей</text><text class="s" x="90" y="304" text-anchor="middle">LCD / OLED</text></g>
+        <g class="mod" data-id="pmic" tabindex="0" role="button" aria-label="Захранване"><rect x="690" y="150" width="120" height="100"/><text class="t" x="750" y="196" text-anchor="middle">Захранване</text><text class="s" x="750" y="214" text-anchor="middle">PMIC</text></g>
+      </svg>
+    </div>
+    <div class="detail" id="modDetail" aria-live="polite"><strong id="modName"></strong><p id="modText"></p></div>
+  </div>
+  <div class="tip" id="tip" hidden></div>
+  <label class="chk" for="tddiCk" style="margin-top:14px"><input id="tddiCk" type="checkbox"><span>Покажи TDDI: драйверът на дисплея и тъч контролерът в един чип</span></label>
+
+  <figure>
+    <div class="fig">
+      <svg viewBox="0 0 720 150" role="img" aria-labelledby="tdT tdD">
+        <title id="tdT">Времеделене при TDDI</title>
+        <desc id="tdD">Един кадър: дисплеят записва групи редове, а тъчът сканира в паузите между тях и в дългата пауза в края на кадъра.</desc>
+        <g class="sv-text sv-strong"><text x="10" y="42">Дисплей</text><text x="10" y="102">Тъч</text></g>
+        <rect class="lane-d" x="90" y="24" width="90" height="28"/><rect class="lane-d" x="196" y="24" width="90" height="28"/><rect class="lane-d" x="302" y="24" width="90" height="28"/><rect class="lane-d" x="408" y="24" width="90" height="28"/>
+        <rect class="lane-t" x="180" y="84" width="16" height="28"/><rect class="lane-t" x="286" y="84" width="16" height="28"/><rect class="lane-t" x="392" y="84" width="16" height="28"/><rect class="lane-t" x="498" y="84" width="170" height="28"/>
+        <g class="guide"><path d="M180 52V84M196 52V84M286 52V84M302 52V84M392 52V84M408 52V84M498 24V84"/></g>
+        <g class="sv-text sv-mute" text-anchor="middle"><text x="135" y="42">редове</text><text x="241" y="42">редове</text><text x="347" y="42">редове</text><text x="453" y="42">редове</text><text x="583" y="70">дълга пауза в края на кадъра (V-blank)</text><text x="583" y="102">сканиране</text></g>
+      </svg>
+    </div>
+    <figcaption>Дисплеят и сензорът споделят чипа и времето. Тъчът сканира само докато пикселите не се презаписват, иначе сигналите на дисплея биха заглушили слабия сигнал от пръста.</figcaption>
+  </figure>
+</section>
+<section id="s3">
+  <div class="sec-head"><p class="eyebrow">Раздел 3</p><h2>Практика и любопитни факти</h2></div>
+
+  <div class="prose">
+    <h3 id="s3-1">3.1 Симулатор на тъч матрица</h3>
+    <p>Влачете пръста по екрана. Цветът показва колко е паднал капацитетът във всеки възел. Контролерът отделя допира от шума с праг и изчислява позицията между възлите. Сменете режима на Self и добавете втори пръст: ще видите ghost точките. Опитайте и ръкавица, вода, зарядно и длан.</p>
+  </div>
+  <div class="instrument" id="sim">
+    <div class="instrument-head"><span>Симулатор на тъч матрица</span><span>екран 140 × 80 mm · 28 × 16 възела</span></div>
+    <div class="sim">
+      <div class="sim-controls">
+        <div class="ctl">
+          <label for="sMode">Режим на измерване</label>
+          <select id="sMode">
+            <option value="mutual">Mutual (по възли)</option>
+            <option value="self">Self (по линии)</option>
+          </select>
+        </div>
+        <div class="ctl">
+          <label for="sN">Брой пръсти</label>
+          <select id="sN">
+            <option value="1">1 пръст</option>
+            <option value="2">2 пръста</option>
+          </select>
+        </div>
+        <div class="ctl">
+          <label for="sCond">Условие</label>
+          <select id="sCond">
+            <option value="normal">Нормално</option>
+            <option value="glove">Ръкавица</option>
+            <option value="water">Капка вода</option>
+            <option value="charger">Зарядно (шум)</option>
+            <option value="palm">Длан</option>
+          </select>
+        </div>
+        <div class="ctl">
+          <label for="sNoise">Шум <output id="oNoise" for="sNoise">8</output></label>
+          <input id="sNoise" type="range" min="0" max="60" step="1" value="8">
+        </div>
+        <div class="ctl">
+          <label for="sThr">Праг <output id="oThr" for="sThr">30 %</output></label>
+          <input id="sThr" type="range" min="10" max="70" step="1" value="30">
+        </div>
+        <label class="check" for="sGlove">
+          <input id="sGlove" type="checkbox">
+          <span>Glove режим<br><small>прагът е наполовина по-нисък</small></span>
+        </label>
+      </div>
+      <div class="sim-view">
+        <canvas id="tcv" width="720" height="360" role="img" aria-label="Топлинна карта на сензорната матрица. Влачете за да местите пръстите."></canvas>
+        <div class="verdict-row">
+          <span class="verdict v-ok" id="sVerdict">Стабилен допир</span>
+          <p class="verdict-text" id="sVerdictText"></p>
+        </div>
+        <div class="readout">
+          <div><div class="k">SNR</div><div class="v" id="rSnr">—</div></div>
+          <div><div class="k">Контакти</div><div class="v" id="rCnt">0</div></div>
+          <div><div class="k">Грешка</div><div class="v" id="rErr">—</div></div>
+        </div>
+        <div>
+          <p class="hint" style="margin-bottom:6px">Отчет към хоста (HID):</p>
+          <div class="bytes" id="hidBytes" style="margin:0"></div>
+          <p class="hint" id="hidInfo" style="margin-top:6px"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  <details>
+    <summary>Как работи моделът</summary>
+    <div class="dbody">
+      <p>Всеки допир е Гаусов профил: ΔC = A · exp(−d² / 2σ²), със σ = 3,5 mm (така че широчината му да е около 8 mm, колкото пръста) и A = 300 условни единици. Към всеки възел се добавя Гаусов шум. Позицията е претеглен центроид по 3 × 3 възела около пика: X = Σ(x · S) / ΣS, като от теглата се изважда шумовият под.</p>
+      <p><span class="tag assume">Допускане</span>Решетката, амплитудата, σ, праговете в процент и ефектите на ръкавицата (сигнал ×0,3), водата и зарядното са за нагледност. Реалните стойности са търговска тайна на производителите. Като ориентир: Windows изисква точност до ±1 mm, а Infineon препоръчва SNR най-малко 5:1 и debounce от 3 кадъра. Фалшивите допири от зарядното тук се появяват за един кадър. Debounce ги филтрира.</p>
+    </div>
+  </details>
+
+  <div class="prose">
+    <h3 id="s3-2">3.2 Любопитни факти</h3>
+  </div>
+  <div class="tiles t3">
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M22 54V30l-6-8a4 4 0 0 1 6-4l4 6V12a4 4 0 0 1 8 0v18h2V16a4 4 0 0 1 8 0v18h2V24a4 4 0 0 1 8 0v22c0 6-4 8-8 8z"/></g></svg><b>Ръкавица</b><span>Тъканта отдалечава пръста и сигналът пада под прага.</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M32 8C22 24 16 32 16 40a16 16 0 0 0 32 0c0-8-6-16-16-30z"/></g></svg><b>Вода</b><span>Self режимът я бърка с пръст, а mutual игнорира изолирана капка.</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M8 50h48M24 30V10a4 4 0 0 1 8 0v20M32 30l10 4"/><path d="M44 16v10M40 20l4-4 4 4" /></g></svg><b>Hover</b><span>Self сканиране засича пръст до 20 mm над екрана.</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M12 52l6-16 26-26 10 10-26 26z"/><path d="M38 16l10 10"/></g></svg><b>Стилус</b><span>Пасивният работи като пръст. Активният излъчва сигнал: USI, MPP, AES.</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><ellipse cx="32" cy="36" rx="22" ry="18"/><path d="M18 36h28"/></g></svg><b>Длан</b><span>Голямо петно: Confidence = 0 и ОС игнорира контакта.</span></div>
+    <div class="tile"><svg viewBox="0 0 64 64" aria-hidden="true"><g class="ico"><path d="M36 6L16 36h14l-4 22 22-32H34z"/></g></svg><b>Зарядно</b><span>Евтините зарядни вкарват шум и пускат „сами натискащи се“ точки.</span></div>
+  </div>
+  <div class="chips">
+    <div class="chip"><b>20 mm</b><span>разстояние за hover (maXTouch mXT449TD)</span></div>
+    <div class="chip"><b>5 mm</b><span>дебелина на ръкавицата за един пръст (същият контролер)</span></div>
+    <div class="chip"><b>250</b><span>най-много едновременни контакти в Windows</span></div>
+  </div>
+  <div class="bars">
+    <h4>Латентност от допир до дисплея (ms)</h4>
+    <div class="bar"><span>Лаб. прототип</span><span class="track"><i style="width:1.5%"></i></span><span class="val">1</span></div>
+    <div class="bar"><span>Праг на усещане</span><span class="track"><i style="width:3%"></i></span><span class="val">около 6</span></div>
+    <div class="bar"><span>Windows изисква</span><span class="track"><i style="width:17.5%"></i></span><span class="val">до 35</span></div>
+    <div class="bar"><span>Търговски (2012)</span><span class="track"><i style="width:100%"></i></span><span class="val">50–200</span></div>
+  </div>
+  <p class="tnote">Прототипът е на Microsoft Research (UIST 2012). Праговете на усещане са от изследване от CHI 2014: при тапване хората не усещат латентност под около 6 ms (диапазон 2–11 ms). Скалата е линейна, затова малките стойности са тесни ленти: разликата в порядъка е смисълът.</p>
+</section>
+
+<section id="src">
+  <div class="sec-head"><p class="eyebrow">Литература</p><h2>Източници</h2></div>
+  <p class="tnote" style="margin:8px 0 12px">Липсва информация за контролерите на Goodix и за контролера в конкретен лаптоп. Стойностите при смартфони са търговска тайна. Част от историческите дати идват от вторични източници. Стойностите на капацитета са от бележки за приложение (бутони и тъчпадове) и важат по порядък.</p>
+  <details>
+    <summary>Покажи източниците (16)</summary>
+    <div class="dbody">
+      <ol class="sources">
+        <li><a href="https://ww1.microchip.com/downloads/en/Appnotes/Capacitive-Touch-Sensor-Design-Guide-DS00002934-B.pdf" target="_blank" rel="noopener">Microchip AN2934 — Capacitive Touch Sensor Design Guide</a></li>
+        <li><a href="https://www.microchip.com/content/dam/mchp/documents/OTH/ProductDocuments/DataSheets/mXT449TD%20Touchscreen%20Controller%20Product%20Datasheet.pdf" target="_blank" rel="noopener">Microchip mXT449TD — datasheet</a></li>
+        <li><a href="https://www.mouser.com/pdfdocs/AN64846.pdf" target="_blank" rel="noopener">Infineon AN64846 — Getting Started with CapSense</a></li>
+        <li><a href="https://www.infineon.com/assets/row/public/documents/30/42/infineon-an234185-psoc-4-capsense-touchpad-design-guide-applicationnotes-en.pdf" target="_blank" rel="noopener">Infineon AN234185 — CapSense Touchpad Design Guide</a></li>
+        <li><a href="https://www.ti.com/lit/an/slaa298/slaa298.pdf" target="_blank" rel="noopener">Texas Instruments SLAA298 — резистивен тъч екран</a></li>
+        <li><a href="https://www.ti.com/lit/pdf/sbaa036" target="_blank" rel="noopener">Texas Instruments SBAA036 — Touch Screen Controller</a></li>
+        <li><a href="https://learn.microsoft.com/en-au/windows-hardware/drivers/hid/hid-transports" target="_blank" rel="noopener">Microsoft — HID transports (HID over I2C и SPI)</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/touchscreen-required-hid-top-level-collections" target="_blank" rel="noopener">Microsoft — Touchscreen required HID top-level collections</a></li>
+        <li><a href="https://learn.microsoft.com/en-us/windows-hardware/design/component-guidelines/display-touch" target="_blank" rel="noopener">Microsoft — Windows Precision Touch: изисквания</a></li>
+        <li><a href="https://www.synaptics.com/company/blog/tdsynch" target="_blank" rel="noopener">Synaptics — TDsync</a></li>
+        <li><a href="https://www.edn.com/enhancing-the-fourth-screen-tddi-expands-automotive-display-options/" target="_blank" rel="noopener">EDN — TDDI в автомобилни дисплеи</a></li>
+        <li><a href="https://www.billbuxton.com/inputTimeline.html" target="_blank" rel="noopener">Bill Buxton — Input Devices Timeline</a></li>
+        <li><a href="https://media.elotouch.com/pdfs/marcom/comparison.pdf" target="_blank" rel="noopener">Elo — Comparison of All Elo Touch Technologies</a></li>
+        <li><a href="https://universalstylus.org/the-universal-stylus-initiative-releases-version-2-0-of-its-popular-active-stylus-specification/" target="_blank" rel="noopener">Universal Stylus Initiative — USI 2.0</a></li>
+        <li><a href="https://doi.org/10.1049/el:19650200" target="_blank" rel="noopener">E. A. Johnson, Touch display — a novel input/output device for computers (1965)</a></li>
+        <li><a href="https://doi.org/10.1145/2380116.2380174" target="_blank" rel="noopener">Ng и съавт., Designing for Low-Latency Direct-Touch Input (UIST 2012)</a></li>
+      </ol>
+    </div>
+  </details>
+</section>
+</main>
+</div>
+<script>
+(function () {
+  'use strict';
+
+  var SVGNS = 'http://www.w3.org/2000/svg';
+  function mk(tag, attrs, parent) {
+    var el = document.createElementNS(SVGNS, tag);
+    for (var k in attrs) el.setAttribute(k, attrs[k]);
+    if (parent) parent.appendChild(el);
+    return el;
+  }
+  function $(id) { return document.getElementById(id); }
+  function clamp(x, a, b) { return Math.min(b, Math.max(a, x)); }
+  function fmt(x, d) { return x.toFixed(d).replace('.', ','); }
+
+  /* ---------- 1. Contents rail: highlight the section being read ---------- */
+  var links = Array.prototype.slice.call(document.querySelectorAll('#toc a'));
+  var targets = links.map(function (a) { return document.getElementById(a.getAttribute('href').slice(1)); });
+  var ticking = false;
+  function spy() {
+    ticking = false;
+    var current = 0;
+    for (var i = 0; i < targets.length; i++) {
+      if (targets[i] && targets[i].getBoundingClientRect().top <= 140) current = i;
+    }
+    links.forEach(function (a, i) { a.classList.toggle('active', i === current); });
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(spy); }
+  }, { passive: true });
+  window.addEventListener('resize', spy);
+  spy();
+
+  /* ---------- 2. Layer stack (cross-section) ---------- */
+  var STACKS = {
+    gff: {
+      text: 'GFF (Glass-Film-Film): два тънки PET филма с електроди (Rx и Tx) са залепени под стъклото. Евтино решение, но по-дебело и с по-ниска прозрачност.',
+      layers: [['Покривно стъкло', 34, 'l1'], ['Лепило (OCA)', 12, 'l4'], ['Филм Rx', 10, 'sens'], ['Филм Tx', 10, 'sens'], ['Лепило (OCA)', 12, 'l4'], ['Поляризатор', 8, 'l4'], ['Цветен филтър', 12, 'l3'], ['Течни кристали', 12, 'l2'], ['TFT стъкло', 14, 'l3']]
+    },
+    ogs: {
+      text: 'OGS (One Glass Solution): електродите са нанесени директно върху вътрешната страна на покривното стъкло. Тънко решение, но стъклото е по-крехко.',
+      layers: [['Покривно стъкло', 34, 'l1'], ['Сензор върху стъклото', 8, 'sens'], ['Лепило (OCA)', 12, 'l4'], ['Поляризатор', 8, 'l4'], ['Цветен филтър', 12, 'l3'], ['Течни кристали', 12, 'l2'], ['TFT стъкло', 14, 'l3']]
+    },
+    oncell: {
+      text: 'On-cell: сензорът е върху цветния филтър на дисплея, под поляризатора. Тънко е и е популярно при AMOLED дисплеите.',
+      layers: [['Покривно стъкло', 34, 'l1'], ['Лепило (OCA)', 12, 'l4'], ['Поляризатор', 8, 'l4'], ['Сензор върху цветния филтър', 8, 'sens'], ['Цветен филтър', 12, 'l3'], ['Течни кристали', 12, 'l2'], ['TFT стъкло', 14, 'l3']]
+    },
+    incell: {
+      text: 'In-cell: сензорът е вграден в самия дисплей (често общият електрод VCOM служи и като сензор). Най-тънко и най-сложно: изисква интегриран контролер (TDDI).',
+      layers: [['Покривно стъкло', 34, 'l1'], ['Лепило (OCA)', 12, 'l4'], ['Поляризатор', 8, 'l4'], ['Цветен филтър', 12, 'l3'], ['Течни кристали', 12, 'l2'], ['TFT слой със сензор', 14, 'sens']]
+    }
+  };
+  var stkSvg = $('stkSvg');
+  var stkText = $('stkText');
+  var stkBtns = Array.prototype.slice.call(document.querySelectorAll('#stkSeg button'));
+  function drawStack(key) {
+    var s = STACKS[key];
+    while (stkSvg.firstChild) stkSvg.removeChild(stkSvg.firstChild);
+    mk('rect', { 'class': 'finger', x: 190, y: 2, width: 80, height: 42, rx: 30 }, stkSvg);
+    var t0 = mk('text', { 'class': 'sv-text sv-strong', x: 230, y: 28, 'text-anchor': 'middle' }, stkSvg);
+    t0.textContent = 'Пръст';
+    var y = 44, k = 2.2;
+    s.layers.forEach(function (L) {
+      var h = L[1] * k, isS = L[2] === 'sens';
+      mk('rect', { 'class': 'lay ' + L[2], x: 40, y: y, width: 380, height: h }, stkSvg);
+      mk('line', { 'class': 'guide', x1: 420, y1: y + h / 2, x2: 438, y2: y + h / 2 }, stkSvg);
+      var t = mk('text', { 'class': 'sv-text' + (isS ? ' sens-t' : ''), x: 446, y: y + h / 2 + 4 }, stkSvg);
+      t.textContent = L[0];
+      y += h;
+    });
+    stkText.textContent = s.text;
+    stkBtns.forEach(function (b) { b.setAttribute('aria-pressed', b.getAttribute('data-k') === key ? 'true' : 'false'); });
+  }
+  stkBtns.forEach(function (b) {
+    b.addEventListener('click', function () { drawStack(b.getAttribute('data-k')); });
+  });
+  drawStack('oncell');
+
+  /* ---------- 3. Electrode matrix figure ---------- */
+  (function () {
+    var lines = $('mxLines'), nodes = $('mxNodes');
+    var cx = 300, cy = 105, sigma = 35, i, j;
+    for (i = 0; i < 9; i++) mk('line', { x1: 100 + i * 50, y1: 14, x2: 100 + i * 50, y2: 196, style: 'stroke:var(--accent);stroke-width:2;opacity:.55' }, lines);
+    for (j = 0; j < 4; j++) mk('line', { x1: 70, y1: 30 + j * 50, x2: 530, y2: 30 + j * 50, style: 'stroke:var(--warn);stroke-width:2;opacity:.55' }, lines);
+    for (i = 0; i < 9; i++) {
+      for (j = 0; j < 4; j++) {
+        var x = 100 + i * 50, y = 30 + j * 50;
+        var d2 = (x - cx) * (x - cx) + (y - cy) * (y - cy);
+        var r = 3 + 9 * Math.exp(-d2 / (2 * sigma * sigma));
+        mk('circle', { 'class': 'node', cx: x, cy: y, r: r.toFixed(1) }, nodes);
+      }
+    }
+  })();
+
+  /* ---------- 4. Signal / noise / threshold figure ---------- */
+  (function () {
+    var pts = [], seed = 7;
+    function rnd() { seed = (seed * 16807) % 2147483647; return seed / 2147483647; }
+    for (var x = 40; x <= 680; x += 8) {
+      var t = clamp((x - 270) / 40, 0, 1) - clamp((x - 470) / 40, 0, 1);
+      var hump = t * t * (3 - 2 * t) * 80;
+      var n = (rnd() - 0.5) * 16;
+      pts.push(x + ',' + (150 - hump + n).toFixed(1));
+    }
+    $('snLine').setAttribute('points', pts.join(' '));
+  })();
+
+  /* ---------- 5. Resistive divider ---------- */
+  var rsPos = $('rsPos');
+  function rsUpdate() {
+    var p = Number(rsPos.value), v = 3 * p / 100;
+    $('rsOut').textContent = p + ' %';
+    $('rsMark').style.left = p + '%';
+    $('rsText').textContent = 'V(Y+) = ' + fmt(v, 2) + ' V от Vref = 3 V, значи X = ' + p + ' % от ширината на екрана.';
+  }
+  rsPos.addEventListener('input', rsUpdate);
+  rsUpdate();
+
+  /* ---------- 6. Block diagram with tooltips ---------- */
+  var MODS = {
+    sensor: { name: 'Сензорна матрица', tip: 'Решетка от прозрачни електроди.', text: 'Tx линиите се възбуждат, Rx линиите се измерват. Пресичанията са възлите. Електродите са от ITO, metal mesh или сребърни нанонишки, на стъпка около 5 mm.' },
+    ctl: { name: 'Тъч контролер', tip: 'Измерва, филтрира и изчислява позицията.', text: 'Аналоговият преден край (AFE) възбужда Tx, интегрира заряда по Rx и го превръща с АЦП в числа. MCU-ът изважда baseline, прилага праг и филтри, изчислява центроида, следи пръстите (Contact ID) и сваля линията INT.' },
+    host: { name: 'Хост (SoC / CPU)', tip: 'Чете отчетите и ги дава на системата.', text: 'При INT хостът чете HID отчета по I2C, SPI или USB. HID драйверът на ОС (Windows, Android, Linux) го превръща в събития за допир, затова не е нужен специален драйвер за всеки екран.' },
+    ddi: { name: 'Драйвер на дисплея (DDI)', tip: 'Рисува пикселите; при TDDI и сканира тъча.', text: 'Получава видео по MIPI DSI и управлява пикселите. При TDDI същият чип е и тъч контролер. Дисплейът и тъчът делят времето: тъчът сканира в паузите между групите редове.' },
+    display: { name: 'Дисплей', tip: 'LCD или OLED панел.', text: 'Показва картината. Превключването на пикселите създава шум точно под сензора, затова сканирането се синхронизира с дисплея.' },
+    pmic: { name: 'Захранване (PMIC)', tip: 'Подава напреженията на тъча и дисплея.', text: 'Осигурява аналоговото захранване (AVDD), логическото (VDDIO, около 1,8 или 3,3 V) и повишено напрежение за Tx линиите: колкото по-високо е то, толкова по-силен е сигналът спрямо шума.' }
+  };
+  var tip = $('tip'), nameEl = $('modName'), textEl = $('modText');
+  var mods = Array.prototype.slice.call(document.querySelectorAll('.mod[data-id]'));
+  function selectMod(id) {
+    var info = MODS[id];
+    if (!info) return;
+    nameEl.textContent = info.name;
+    textEl.textContent = info.text;
+    mods.forEach(function (g) { g.classList.toggle('sel', g.getAttribute('data-id') === id); });
+  }
+  function placeTip(x, y) {
+    var pad = 12, w = tip.offsetWidth, h = tip.offsetHeight;
+    var left = x + 14, top = y + 16;
+    if (left + w + pad > window.innerWidth) left = x - w - 14;
+    if (left < pad) left = pad;
+    if (top + h + pad > window.innerHeight) top = y - h - 14;
+    if (top < pad) top = pad;
+    tip.style.left = left + 'px';
+    tip.style.top = top + 'px';
+  }
+  mods.forEach(function (g) {
+    var id = g.getAttribute('data-id');
+    g.addEventListener('pointerenter', function (e) {
+      tip.textContent = MODS[id].name + ': ' + MODS[id].tip;
+      tip.hidden = false;
+      placeTip(e.clientX, e.clientY);
+    });
+    g.addEventListener('pointermove', function (e) { placeTip(e.clientX, e.clientY); });
+    g.addEventListener('pointerleave', function () { tip.hidden = true; });
+    g.addEventListener('click', function () { selectMod(id); });
+    g.addEventListener('focus', function () { selectMod(id); });
+    g.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectMod(id); }
+    });
+  });
+  selectMod('ctl');
+  $('tddiCk').addEventListener('change', function () {
+    var on = this.checked;
+    ['tddi', 'tddiT'].forEach(function (id) {
+      if (on) $(id).removeAttribute('hidden'); else $(id).setAttribute('hidden', '');
+    });
+  });
+
+  /* ---------- 7. Touch matrix simulator ---------- */
+  var NX = 28, NY = 16, PITCH = 5;          // nodes and node pitch (mm)
+  var SW = NX * PITCH, SH = NY * PITCH;     // 140 x 80 mm
+  var AMP = 300;                            // full finger signal (counts)
+  var SIG = 3.5;                            // finger profile sigma (mm)
+  var PALM_SIG = 17;
+  var WATER = { x: 112, y: 20 };
+  var GHOST_R = 8;                          // mm: reported point farther than this from every finger is a ghost
+  var ML = 30, MT = 30;                     // canvas margins for axis labels and self profiles
+
+  var cv = $('tcv'), ctx = cv.getContext('2d');
+  var elMode = $('sMode'), elN = $('sN'), elCond = $('sCond'), elNoise = $('sNoise'), elThr = $('sThr'), elGlove = $('sGlove');
+  var fingers = [{ x: 48, y: 38 }, { x: 98, y: 52 }];
+  var cssW = 600, cssH = 300, cell = 20;
+  var drag = -1, frame = 0, ghostHold = 0, lastHid = '';
+  var COL = {};
+  var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function hexToRgb(h) {
+    h = (h || '').trim();
+    if (h.charAt(0) !== '#') return [128, 128, 128];
+    if (h.length === 4) h = '#' + h[1] + h[1] + h[2] + h[2] + h[3] + h[3];
+    return [parseInt(h.substr(1, 2), 16), parseInt(h.substr(3, 2), 16), parseInt(h.substr(5, 2), 16)];
+  }
+  function readColors() {
+    var cs = getComputedStyle(document.documentElement);
+    ['surface', 'surface-2', 'accent', 'fg', 'muted', 'warn', 'ok', 'bad', 'line'].forEach(function (n) {
+      COL[n] = hexToRgb(cs.getPropertyValue('--' + n));
+    });
+  }
+  function rgba(c, a) { return 'rgba(' + c[0] + ',' + c[1] + ',' + c[2] + ',' + a + ')'; }
+  function mix(a, b, t) {
+    return 'rgb(' + Math.round(a[0] + (b[0] - a[0]) * t) + ',' + Math.round(a[1] + (b[1] - a[1]) * t) + ',' + Math.round(a[2] + (b[2] - a[2]) * t) + ')';
+  }
+  function randn() {
+    var u = 1 - Math.random(), v = Math.random();
+    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
+  }
+  function g2(d2, s) { return Math.exp(-d2 / (2 * s * s)); }
+
+  function resize() {
+    var w = cv.parentElement.clientWidth - 32;
+    if (!w || w < 120) return;
+    cssW = w;
+    cell = (cssW - ML) / NX;
+    cssH = MT + NY * cell + 4;
+    var dpr = Math.min(2, window.devicePixelRatio || 1);
+    cv.width = Math.round(cssW * dpr);
+    cv.height = Math.round(cssH * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    readColors();
+    step(true);
+  }
+
+  function activeFingers() {
+    var n = Number(elN.value), list = [], i;
+    var cond = elCond.value;
+    for (i = 0; i < n; i++) {
+      var f = fingers[i];
+      var c = { x: f.x, y: f.y, amp: AMP, sigma: SIG, real: true, palm: false };
+      if (cond === 'glove') c.amp = AMP * 0.3;
+      if (cond === 'palm' && i === 0) { c.sigma = PALM_SIG; c.palm = true; }
+      list.push(c);
+    }
+    return list;
+  }
+
+  function computeMutual(contacts, sigN, thr, cond) {
+    var v = new Float32Array(NX * NY), i, j, k;
+    for (j = 0; j < NY; j++) {
+      for (i = 0; i < NX; i++) {
+        var cx = (i + 0.5) * PITCH, cy = (j + 0.5) * PITCH, s = 0;
+        for (k = 0; k < contacts.length; k++) {
+          var c = contacts[k], dx = cx - c.x, dy = cy - c.y;
+          s += c.amp * g2(dx * dx + dy * dy, c.sigma);
+        }
+        v[j * NX + i] = s + sigN * randn();
+      }
+    }
+    if (cond === 'charger' && Math.random() < 0.09) {
+      var bi = Math.floor(Math.random() * NX), bj = Math.floor(Math.random() * NY);
+      v[bj * NX + bi] += AMP * (0.55 + 0.5 * Math.random());
+      ghostHold = 7;
+    }
+    // components of nodes above threshold (8-connectivity)
+    var lab = new Int16Array(NX * NY), sizes = [0], n = 0, stack, idx;
+    for (idx = 0; idx < v.length; idx++) {
+      if (v[idx] >= thr && !lab[idx]) {
+        n++; sizes[n] = 0; stack = [idx]; lab[idx] = n;
+        while (stack.length) {
+          var q = stack.pop(), qi = q % NX, qj = (q - qi) / NX, di, dj;
+          sizes[n]++;
+          for (dj = -1; dj <= 1; dj++) for (di = -1; di <= 1; di++) {
+            var ni = qi + di, nj = qj + dj;
+            if (ni < 0 || nj < 0 || ni >= NX || nj >= NY) continue;
+            var nq = nj * NX + ni;
+            if (v[nq] >= thr && !lab[nq]) { lab[nq] = n; stack.push(nq); }
+          }
+        }
+      }
+    }
+    var floor = Math.min(2 * sigN, 0.5 * thr), reported = [], palmComp = {};
+    for (idx = 0; idx < v.length; idx++) {
+      var val = v[idx];
+      if (val < thr) continue;
+      var pi = idx % NX, pj = (idx - pi) / NX, isMax = true, di2, dj2;
+      for (dj2 = -1; dj2 <= 1 && isMax; dj2++) for (di2 = -1; di2 <= 1; di2++) {
+        if (!di2 && !dj2) continue;
+        var ai = pi + di2, aj = pj + dj2;
+        if (ai < 0 || aj < 0 || ai >= NX || aj >= NY) continue;
+        var av = v[aj * NX + ai], before = (aj * NX + ai) < idx;
+        if (before ? av >= val : av > val) { isMax = false; break; }
+      }
+      if (!isMax) continue;
+      var comp = lab[idx], isPalm = sizes[comp] > 14;
+      if (isPalm) {
+        if (palmComp[comp]) continue;
+        palmComp[comp] = true;
+      }
+      // 3x3 weighted centroid
+      var sw = 0, sx = 0, sy = 0;
+      for (dj2 = -1; dj2 <= 1; dj2++) for (di2 = -1; di2 <= 1; di2++) {
+        var bi2 = pi + di2, bj2 = pj + dj2;
+        if (bi2 < 0 || bj2 < 0 || bi2 >= NX || bj2 >= NY) continue;
+        var w = Math.max(0, v[bj2 * NX + bi2] - floor);
+        sw += w; sx += w * (bi2 + 0.5) * PITCH; sy += w * (bj2 + 0.5) * PITCH;
+      }
+      if (sw <= 0) { sx = (pi + 0.5) * PITCH; sy = (pj + 0.5) * PITCH; sw = 1; }
+      reported.push({ x: sx / sw, y: sy / sw, palm: isPalm, comp: comp });
+    }
+    return { v: v, lab: lab, reported: reported };
+  }
+
+  function profile(contacts, axis, sigN, extra) {
+    var n = axis === 'x' ? NX : NY, p = new Float32Array(n), i, k;
+    for (i = 0; i < n; i++) {
+      var c0 = (i + 0.5) * PITCH, s = 0;
+      for (k = 0; k < contacts.length; k++) {
+        var c = contacts[k], d = c0 - (axis === 'x' ? c.x : c.y);
+        s += c.amp * g2(d * d, c.sigma);
+      }
+      if (extra) { var e = c0 - (axis === 'x' ? extra.x : extra.y); s += extra.amp * g2(e * e, extra.sigma); }
+      p[i] = s + sigN * randn();
+    }
+    return p;
+  }
+  function peaks1d(p, thr, sigN) {
+    var out = [], n = p.length, i, floor = Math.min(2 * sigN, 0.5 * thr);
+    for (i = 0; i < n; i++) {
+      if (p[i] < thr) continue;
+      var l = i > 0 ? p[i - 1] : -1e9, r = i < n - 1 ? p[i + 1] : -1e9;
+      if (p[i] < l || p[i] <= r) continue;
+      var sw = 0, sx = 0, d;
+      for (d = -1; d <= 1; d++) {
+        var q = i + d; if (q < 0 || q >= n) continue;
+        var w = Math.max(0, p[q] - floor); sw += w; sx += w * (q + 0.5) * PITCH;
+      }
+      out.push({ pos: sw > 0 ? sx / sw : (i + 0.5) * PITCH, idx: i });
+    }
+    return out;
+  }
+  function computeSelf(contacts, sigN, thr, cond) {
+    var extra = cond === 'water' ? { x: WATER.x, y: WATER.y, amp: AMP * 0.7, sigma: 2.5 } : null;
+    var px = profile(contacts, 'x', sigN, extra), py = profile(contacts, 'y', sigN, extra);
+    var ax = peaks1d(px, thr, sigN), ay = peaks1d(py, thr, sigN), reported = [], a, b;
+    var wide = 0, i;
+    for (i = 0; i < NX; i++) if (px[i] >= thr) wide++;
+    var isPalm = wide > 8;
+    for (a = 0; a < ax.length; a++) for (b = 0; b < ay.length; b++) {
+      reported.push({ x: ax[a].pos, y: ay[b].pos, palm: isPalm });
+    }
+    return { px: px, py: py, reported: reported };
+  }
+
+  function nearestTruth(pt, truth) {
+    var best = 1e9, k;
+    for (k = 0; k < truth.length; k++) {
+      var d = Math.sqrt(Math.pow(pt.x - truth[k].x, 2) + Math.pow(pt.y - truth[k].y, 2));
+      if (d < best) best = d;
+    }
+    return best;
+  }
+
+  function h2(n) { n = n & 255; return (n < 16 ? '0' : '') + n.toString(16).toUpperCase(); }
+  function updateHid(reported) {
+    var list = reported.slice(0, 3), html = '', info = [];
+    if (!list.length) {
+      html = '<div class="byte dim"><b>нищо</b><span>няма допир: INT остава във висок стейт</span></div>';
+    } else {
+      html += '<div class="byte"><b>01</b><span>Report ID</span></div>';
+      list.forEach(function (c, i) {
+        var xl = Math.round(clamp(c.x / SW, 0, 1) * 4095), yl = Math.round(clamp(c.y / SH, 0, 1) * 4095);
+        var flags = c.palm ? 0x01 : 0x03;
+        html += '<div class="byte"><b>' + h2(flags) + '</b><span>Tip · Confidence' + (c.palm ? ' (0)' : '') + '</span></div>' +
+          '<div class="byte"><b>' + h2(i) + '</b><span>Contact ID</span></div>' +
+          '<div class="byte"><b>' + h2(xl) + ' ' + h2(xl >> 8) + '</b><span>X</span></div>' +
+          '<div class="byte"><b>' + h2(yl) + ' ' + h2(yl >> 8) + '</b><span>Y</span></div>';
+        info.push('контакт ' + i + ': X = ' + fmt(c.x, 1) + ' mm, Y = ' + fmt(c.y, 1) + ' mm → X = ' + xl + ', Y = ' + yl);
+      });
+      var st = (frame * 83) & 0xFFFF;
+      html += '<div class="byte"><b>' + h2(st) + ' ' + h2(st >> 8) + '</b><span>Scan Time (×100 µs, при 120 Hz)</span></div>' +
+        '<div class="byte"><b>' + h2(reported.length) + '</b><span>Contact Count</span></div>';
+    }
+    var key = html + info.join('|');
+    if (key === lastHid) return;
+    lastHid = key;
+    $('hidBytes').innerHTML = html;
+    $('hidInfo').textContent = info.join(' · ');
+  }
+
+  var STATE = {
+    ok: ['v-ok', 'Стабилен допир'],
+    weak: ['v-faint', 'Слаб сигнал'],
+    none: ['v-under', 'Няма допир'],
+    ghost: ['v-burn', 'Ghost touch'],
+    palm: ['v-heavy', 'Длан отхвърлена']
+  };
+  function setVerdict(k, text) {
+    var v = $('sVerdict');
+    v.className = 'verdict ' + STATE[k][0];
+    v.textContent = STATE[k][1];
+    $('sVerdictText').textContent = text;
+  }
+
+  function step(force) {
+    if (!COL.accent) readColors();
+    var mode = elMode.value, cond = elCond.value;
+    var sigN = Number(elNoise.value);
+    var thrPct = Number(elThr.value) * (elGlove.checked ? 0.5 : 1);
+    var thr = AMP * thrPct / 100;
+    var contacts = activeFingers();
+    var truth = contacts.map(function (c) { return { x: c.x, y: c.y }; });
+    var res, reported, i, j;
+
+    if (mode === 'mutual') res = computeMutual(contacts, sigN, thr, cond);
+    else res = computeSelf(contacts, sigN, thr, cond);
+    reported = res.reported;
+
+    // classify reported points
+    var ghosts = 0, rejected = 0, ok = [], maxErr = null;
+    reported.forEach(function (r) {
+      var d = nearestTruth(r, truth);
+      r.ghost = d > GHOST_R;
+      if (r.palm) rejected++;
+      else if (r.ghost) ghosts++;
+      else { ok.push(r); if (maxErr === null || d > maxErr) maxErr = d; }
+    });
+
+    // ----- draw -----
+    ctx.clearRect(0, 0, cssW, cssH);
+    ctx.fillStyle = rgba(COL['surface-2'], 1);
+    ctx.fillRect(0, 0, cssW, cssH);
+    ctx.font = '11px ' + getComputedStyle(document.body).fontFamily;
+    ctx.fillStyle = rgba(COL.muted, 1);
+    ctx.textAlign = 'left';
+    ctx.fillText('Tx →', ML, 11);
+    ctx.save(); ctx.translate(11, MT + 40); ctx.rotate(-Math.PI / 2); ctx.fillText('Rx →', 0, 0); ctx.restore();
+
+    var pad = 1;
+    for (j = 0; j < NY; j++) {
+      for (i = 0; i < NX; i++) {
+        var t = 0;
+        if (mode === 'mutual') t = Math.pow(clamp(res.v[j * NX + i] / AMP, 0, 1), 0.75);
+        ctx.fillStyle = mix(COL.surface, COL.accent, t);
+        ctx.fillRect(ML + i * cell + pad, MT + j * cell + pad, cell - 2 * pad, cell - 2 * pad);
+        if (mode === 'mutual' && res.v[j * NX + i] >= thr) {
+          var inPalm = false, lb = res.lab[j * NX + i];
+          reported.forEach(function (r) { if (r.palm && r.comp === lb) inPalm = true; });
+          ctx.strokeStyle = inPalm ? rgba(COL.bad, 1) : rgba(COL.warn, 1);
+          ctx.lineWidth = 1.5;
+          ctx.strokeRect(ML + i * cell + 1.5, MT + j * cell + 1.5, cell - 3, cell - 3);
+        }
+      }
+    }
+
+    if (mode === 'self') {
+      // line profiles in the margins
+      var thrLine = thr;
+      for (i = 0; i < NX; i++) {
+        var hx = clamp(res.px[i] / AMP, 0, 1) * (MT - 16);
+        ctx.fillStyle = rgba(COL.accent, 0.85);
+        ctx.fillRect(ML + i * cell + 2, MT - 2 - hx, cell - 4, hx);
+      }
+      for (j = 0; j < NY; j++) {
+        var hy = clamp(res.py[j] / AMP, 0, 1) * (ML - 6);
+        ctx.fillStyle = rgba(COL.accent, 0.85);
+        ctx.fillRect(ML - 2 - hy, MT + j * cell + 2, hy, cell - 4);
+      }
+      ctx.strokeStyle = rgba(COL.warn, 1); ctx.lineWidth = 1; ctx.setLineDash([4, 3]);
+      var ty = MT - 2 - clamp(thrLine / AMP, 0, 1) * (MT - 16);
+      ctx.beginPath(); ctx.moveTo(ML, ty); ctx.lineTo(ML + NX * cell, ty); ctx.stroke();
+      var tx = ML - 2 - clamp(thrLine / AMP, 0, 1) * (ML - 6);
+      ctx.beginPath(); ctx.moveTo(tx, MT); ctx.lineTo(tx, MT + NY * cell); ctx.stroke();
+      ctx.setLineDash([]);
+    }
+
+    function px(x) { return ML + x / PITCH * cell; }
+    function py(y) { return MT + y / PITCH * cell; }
+
+    // true contact areas
+    ctx.lineWidth = 1.25; ctx.setLineDash([4, 3]);
+    contacts.forEach(function (c) {
+      ctx.strokeStyle = rgba(COL.fg, 0.7);
+      ctx.beginPath(); ctx.arc(px(c.x), py(c.y), (c.palm ? 24 : 4) / PITCH * cell, 0, Math.PI * 2); ctx.stroke();
+    });
+    if (cond === 'water') {
+      ctx.strokeStyle = rgba(COL.accent, 1);
+      ctx.beginPath(); ctx.arc(px(WATER.x), py(WATER.y), 2.5 / PITCH * cell, 0, Math.PI * 2); ctx.stroke();
+      ctx.setLineDash([]);
+      ctx.fillStyle = rgba(COL.accent, 1);
+      ctx.fillText('капка', px(WATER.x) + 10, py(WATER.y) + 4);
+    }
+    ctx.setLineDash([]);
+
+    // reported points
+    reported.forEach(function (r) {
+      var bad = r.ghost || r.palm, col = r.palm ? COL.warn : (r.ghost ? COL.bad : COL.ok), x = px(r.x), y = py(r.y);
+      ctx.strokeStyle = rgba(col, 1); ctx.lineWidth = 2;
+      ctx.beginPath(); ctx.moveTo(x - 7, y); ctx.lineTo(x + 7, y); ctx.moveTo(x, y - 7); ctx.lineTo(x, y + 7); ctx.stroke();
+      if (bad) { ctx.beginPath(); ctx.arc(x, y, 9, 0, Math.PI * 2); ctx.stroke(); }
+    });
+
+    // ----- readouts -----
+    var effAmp = contacts.length ? contacts[0].amp : AMP;
+    if (cond === 'palm') effAmp = AMP;
+    var snr = sigN > 0 ? effAmp / (6 * sigN) : Infinity;
+    $('rSnr').textContent = isFinite(snr) ? fmt(snr, 1) + ' : 1' : '∞';
+    $('rCnt').textContent = String(reported.length);
+    $('rErr').textContent = maxErr === null ? '—' : fmt(maxErr, 1) + ' mm';
+    $('oNoise').textContent = String(sigN);
+    $('oThr').textContent = Number(elThr.value) + ' %' + (elGlove.checked ? ' (÷2)' : '');
+
+    // ----- verdict -----
+    var glovePeak = contacts.length ? contacts[0].amp : AMP;
+    if (ghosts > 0 || ghostHold > 0) {
+      if (mode === 'self') setVerdict('ghost', 'Self измерва линии, не възли. Всяка комбинация от пик по X и пик по Y изглежда като допир, затова се появяват фалшиви точки.');
+      else setVerdict('ghost', 'Шумът (например от зарядно) надхвърли прага на отделни възли и контролерът отчете допир, който не съществува. Debounce от няколко кадъра го филтрира.');
+    } else if (rejected > 0 && ok.length === 0) {
+      setVerdict('palm', 'Петното е твърде голямо за пръст. Отчетът се изпраща с Confidence = 0 и операционната система го игнорира.');
+    } else if (ok.length === 0) {
+      if (cond === 'glove') setVerdict('none', 'Сигналът през ръкавицата е под прага. Включете glove режим (по-нисък праг) или намалете шума.');
+      else setVerdict('none', 'Няма възли над прага. Намалете прага или шума.');
+    } else if (snr < 5) {
+      setVerdict('weak', 'Допирът се засича, но SNR е под 5 : 1, затова позицията трепти. Намалете шума.');
+    } else if (cond === 'water' && mode === 'mutual') {
+      setVerdict('ok', 'Изолираната капка вода не променя взаимния капацитет, затова допирът е чист. Сменете на Self, за да видите разликата.');
+    } else if (cond === 'glove') {
+      setVerdict('ok', 'Със сигнал ×0,3 допирът се засича благодарение на по-нисък праг, но с по-малък запас спрямо шума.');
+    } else {
+      setVerdict('ok', 'Сигналът е над прага и достатъчно над шума. Позицията е изчислена между възлите.');
+    }
+    if (ghostHold > 0) ghostHold--;
+
+    updateHid(reported);
+    frame++;
+  }
+
+  // dragging
+  function toMm(e) {
+    var r = cv.getBoundingClientRect();
+    var x = (e.clientX - r.left) / r.width * cssW, y = (e.clientY - r.top) / r.height * cssH;
+    return { x: clamp((x - ML) / cell * PITCH, 0, SW), y: clamp((y - MT) / cell * PITCH, 0, SH) };
+  }
+  cv.addEventListener('pointerdown', function (e) {
+    var p = toMm(e), n = Number(elN.value), best = 1e9, bi = 0, i;
+    for (i = 0; i < n; i++) {
+      var d = Math.pow(p.x - fingers[i].x, 2) + Math.pow(p.y - fingers[i].y, 2);
+      if (d < best) { best = d; bi = i; }
+    }
+    drag = bi;
+    fingers[bi].x = p.x; fingers[bi].y = p.y;
+    try { cv.setPointerCapture(e.pointerId); } catch (err) { /* ignore */ }
+    if (reduce) step(true);
+  });
+  cv.addEventListener('pointermove', function (e) {
+    if (drag < 0) return;
+    var p = toMm(e);
+    fingers[drag].x = p.x; fingers[drag].y = p.y;
+    if (reduce) step(true);
+  });
+  function endDrag() { drag = -1; }
+  cv.addEventListener('pointerup', endDrag);
+  cv.addEventListener('pointercancel', endDrag);
+
+  [elMode, elN, elCond, elNoise, elThr, elGlove].forEach(function (el) {
+    el.addEventListener('input', function () { step(true); });
+    el.addEventListener('change', function () { step(true); });
+  });
+
+  if (window.ResizeObserver) new ResizeObserver(resize).observe(cv.parentElement);
+  else window.addEventListener('resize', resize);
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', function () { readColors(); step(true); });
+  new MutationObserver(function () { readColors(); step(true); }).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme'] });
+
+  var last = 0;
+  function loop(ts) {
+    if (!reduce && ts - last > 50) { last = ts; step(false); }
+    requestAnimationFrame(loop);
+  }
+  resize();
+  requestAnimationFrame(loop);
+})();
+</script>
+
+</body></html>
